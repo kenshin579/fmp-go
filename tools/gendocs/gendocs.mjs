@@ -30,6 +30,7 @@ async function extractDoc(page) {
       try { doc = JSON.parse(el.textContent)?.props?.pageProps?.doc ?? null; } catch (_) { doc = null; }
     }
     let resp = null;
+    // 첫 글자가 [ 또는 { 인 <code> 블록을 JSON 응답 예시로 간주(라인번호 거터는 제외됨)
     for (const c of document.querySelectorAll('code')) {
       const t = (c.innerText || '').trim();
       if (t.startsWith('[') || t.startsWith('{')) { resp = t; break; }
@@ -40,60 +41,71 @@ async function extractDoc(page) {
 
 async function main() {
   const limit = process.env.LIMIT ? parseInt(process.env.LIMIT, 10) : Infinity;
+  if (process.env.LIMIT && Number.isNaN(limit)) {
+    throw new Error(`invalid LIMIT: ${process.env.LIMIT}`);
+  }
   let urls = await fetchSitemapUrls();
   if (Number.isFinite(limit)) urls = urls.slice(0, limit);
   console.log(`enumerated ${urls.length} doc URLs`);
 
   const browser = await chromium.launch();
-  const ctx = await browser.newContext({ userAgent: UA });
-  const page = await ctx.newPage();
+  try {
+    const ctx = await browser.newContext({ userAgent: UA });
+    const page = await ctx.newPage();
 
-  const failures = [];
-  const index = {}; // category -> [{title, slug}]
-  let ok = 0;
+    const failures = [];
+    const index = {}; // category -> [{title, slug}]
+    let ok = 0;
 
-  for (const url of urls) {
-    let extracted = { doc: null, resp: null };
-    for (let attempt = 0; attempt < 2; attempt++) {
+    for (const url of urls) {
       try {
-        await page.goto(url, { waitUntil: 'networkidle', timeout: 60000 });
-        await page.waitForTimeout(1500);
-        extracted = await extractDoc(page);
-        if (extracted.doc) break;
+        let extracted = { doc: null, resp: null };
+        for (let attempt = 0; attempt < 2; attempt++) {
+          try {
+            await page.goto(url, { waitUntil: 'networkidle', timeout: 60000 });
+            await page.waitForTimeout(1500);
+            extracted = await extractDoc(page);
+            if (extracted.doc) break;
+          } catch (e) {
+            if (attempt === 1) console.warn(`  retry failed: ${url} (${e.message})`);
+          }
+        }
+        const { doc, resp } = extracted;
+        if (!doc) { failures.push(url); console.warn(`  MISS doc: ${url}`); continue; }
+
+        const slug = doc.pageURL || url.split('/').pop();
+        const cat = categoryDir(doc);
+        const dir = path.join(OUT_ROOT, cat);
+        await mkdir(dir, { recursive: true });
+        await writeFile(path.join(dir, `${slug}.md`), renderMarkdown(doc, resp, url));
+        (index[cat] ||= []).push({ title: doc.title || slug, slug });
+        ok++;
+        if (ok % 25 === 0) console.log(`  ...${ok} written`);
       } catch (e) {
-        if (attempt === 1) console.warn(`  retry failed: ${url} (${e.message})`);
+        failures.push(url);
+        console.warn(`  ERROR: ${url} (${e.message})`);
+      } finally {
+        await new Promise((r) => setTimeout(r, DELAY_MS));
       }
     }
-    const { doc, resp } = extracted;
-    if (!doc) { failures.push(url); console.warn(`  MISS doc: ${url}`); await new Promise((r) => setTimeout(r, DELAY_MS)); continue; }
 
-    const slug = doc.pageURL || url.split('/').pop();
-    const cat = categoryDir(doc);
-    const dir = path.join(OUT_ROOT, cat);
-    await mkdir(dir, { recursive: true });
-    await writeFile(path.join(dir, `${slug}.md`), renderMarkdown(doc, resp, url));
-    (index[cat] ||= []).push({ title: doc.title || slug, slug });
-    ok++;
-    if (ok % 25 === 0) console.log(`  ...${ok} written`);
-    await new Promise((r) => setTimeout(r, DELAY_MS));
-  }
-
-  await browser.close();
-
-  // 인덱스 README
-  const idx = ['# FMP API 문서 카탈로그', '', `총 ${ok}개 엔드포인트. FMP stable API 문서를 자동 변환(tools/gendocs).`, ''];
-  for (const cat of Object.keys(index).sort()) {
-    idx.push(`## ${cat}`, '');
-    for (const e of index[cat].sort((a, b) => a.slug.localeCompare(b.slug))) {
-      idx.push(`- [${e.title}](${cat}/${e.slug}.md)`);
+    // 인덱스 README
+    const idx = ['# FMP API 문서 카탈로그', '', `총 ${ok}개 엔드포인트. FMP stable API 문서를 자동 변환(tools/gendocs).`, ''];
+    for (const cat of Object.keys(index).sort()) {
+      idx.push(`## ${cat}`, '');
+      for (const e of index[cat].sort((a, b) => a.slug.localeCompare(b.slug))) {
+        idx.push(`- [${e.title}](${cat}/${e.slug}.md)`);
+      }
+      idx.push('');
     }
-    idx.push('');
-  }
-  await mkdir(OUT_ROOT, { recursive: true });
-  await writeFile(path.join(OUT_ROOT, 'README.md'), idx.join('\n'));
-  await writeFile(path.join(HERE, 'failures.log'), failures.join('\n'));
+    await mkdir(OUT_ROOT, { recursive: true });
+    await writeFile(path.join(OUT_ROOT, 'README.md'), idx.join('\n'));
+    await writeFile(path.join(HERE, 'failures.log'), failures.join('\n'));
 
-  console.log(`done: ${ok} ok, ${failures.length} failed (see failures.log)`);
+    console.log(`done: ${ok} ok, ${failures.length} failed (see failures.log)`);
+  } finally {
+    await browser.close();
+  }
 }
 
 main().catch((e) => { console.error(e); process.exit(1); });
