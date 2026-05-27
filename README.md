@@ -1,0 +1,43 @@
+# fmp-go
+
+Financial Modeling Prep(FMP) API 의 Go 클라이언트 라이브러리.
+
+## 설치
+
+```bash
+go get github.com/kenshin579/fmp-go@v0.1.0
+```
+
+## 사용
+
+```go
+client, _ := fmp.NewClientFromEnv() // FMP_API_KEY
+ctx := context.Background()
+
+profile, _ := client.Company.Profile(ctx, "AAPL") // 회사 프로필
+fmt.Println(profile.CompanyName, profile.CEO, profile.Website)
+```
+
+## 인증
+
+발급받은 API 키를 `FMP_API_KEY` 환경변수로 두거나 `fmp.NewClient(apiKey)` 로 전달한다.
+모든 요청에 `apikey` 쿼리로 자동 주입된다. FMP stable 엔드포인트
+(`https://financialmodelingprep.com/stable/...`)를 사용한다.
+
+## 커버리지
+
+| 카테고리 | 서비스 | 엔드포인트 |
+|----------|--------|-----------|
+| Company | `client.Company` | Profile (`/stable/profile`) |
+
+> 전체 FMP API 커버리지를 목표로 카테고리 단위로 점진 확장한다.
+> 전체 API 문서 카탈로그: `docs/api/`.
+
+## 개발
+
+```bash
+go build ./...
+go vet ./...
+go test ./...                          # 단위 테스트
+go test -tags integration ./...        # 통합(FMP_API_KEY 필요)
+```
