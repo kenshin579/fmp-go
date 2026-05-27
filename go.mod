@@ -1,3 +1,3 @@
 module github.com/kenshin579/fmp-go
 
-go 1.26.3
+go 1.25
