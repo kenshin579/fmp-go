@@ -2,11 +2,13 @@ package company
 
 import (
 	"context"
+	"fmt"
+	"strings"
 
 	"github.com/kenshin579/fmp-go/internal/httpclient"
 )
 
-// Profile 은 FMP /stable/profile 응답 한 종목.
+// Profile 은 FMP /stable/profile 응답의 단일 종목 프로필이다.
 type Profile struct {
 	Symbol            string  `json:"symbol"`
 	CompanyName       string  `json:"companyName"`
@@ -48,6 +50,9 @@ type Profile struct {
 
 // Profile 은 종목의 회사 프로필을 조회한다. 결과가 없으면 httpclient.ErrNotFound.
 func (c *Client) Profile(ctx context.Context, symbol string) (*Profile, error) {
+	if strings.TrimSpace(symbol) == "" {
+		return nil, fmt.Errorf("fmp: symbol must not be empty")
+	}
 	var out []Profile
 	if err := c.http.GetJSON(ctx, "/stable/profile", map[string]string{"symbol": symbol}, &out); err != nil {
 		return nil, err

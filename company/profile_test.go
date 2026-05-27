@@ -54,6 +54,20 @@ func TestProfile_ParsesFixture(t *testing.T) {
 	if p.Website == "" {
 		t.Error("Website empty")
 	}
+	if p.MarketCap != 3900351299800 {
+		t.Errorf("MarketCap = %d, want 3900351299800", p.MarketCap)
+	}
+	if !p.IsActivelyTrading {
+		t.Error("IsActivelyTrading = false, want true")
+	}
+}
+
+func TestProfile_EmptySymbol(t *testing.T) {
+	c, cleanup := newTestClient(t, http.StatusOK, `[]`)
+	defer cleanup()
+	if _, err := c.Profile(context.Background(), "  "); err == nil {
+		t.Fatal("expected error for empty symbol")
+	}
 }
 
 func TestProfile_EmptyArrayIsNotFound(t *testing.T) {
