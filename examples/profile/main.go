@@ -1,6 +1,6 @@
-// examples/company — FMP 회사 프로필 조회 예제.
+// examples/profile — FMP 회사 프로필 조회 예제.
 //
-// 실행: FMP_API_KEY=... go run ./examples/company AAPL
+// 실행: FMP_API_KEY=... go run ./examples/profile AAPL
 package main
 
 import (
