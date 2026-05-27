@@ -1,0 +1,6 @@
+# 예제 빌드 바이너리(go build ./examples/...)
+/profile
+# 일반 Go 산출물
+*.exe
+*.test
+*.out
