@@ -77,21 +77,21 @@ type Ratio struct {
 	DividendYieldPercentage float64 `json:"dividendYieldPercentage"`
 
 	// Per-share metrics
-	RevenuePerShare              float64 `json:"revenuePerShare"`
-	NetIncomePerShare            float64 `json:"netIncomePerShare"`
-	InterestDebtPerShare         float64 `json:"interestDebtPerShare"`
-	CashPerShare                 float64 `json:"cashPerShare"`
-	BookValuePerShare            float64 `json:"bookValuePerShare"`
-	TangibleBookValuePerShare    float64 `json:"tangibleBookValuePerShare"`
-	ShareholdersEquityPerShare   float64 `json:"shareholdersEquityPerShare"`
-	OperatingCashFlowPerShare    float64 `json:"operatingCashFlowPerShare"`
-	CapexPerShare                float64 `json:"capexPerShare"`
-	FreeCashFlowPerShare         float64 `json:"freeCashFlowPerShare"`
+	RevenuePerShare            float64 `json:"revenuePerShare"`
+	NetIncomePerShare          float64 `json:"netIncomePerShare"`
+	InterestDebtPerShare       float64 `json:"interestDebtPerShare"`
+	CashPerShare               float64 `json:"cashPerShare"`
+	BookValuePerShare          float64 `json:"bookValuePerShare"`
+	TangibleBookValuePerShare  float64 `json:"tangibleBookValuePerShare"`
+	ShareholdersEquityPerShare float64 `json:"shareholdersEquityPerShare"`
+	OperatingCashFlowPerShare  float64 `json:"operatingCashFlowPerShare"`
+	CapexPerShare              float64 `json:"capexPerShare"`
+	FreeCashFlowPerShare       float64 `json:"freeCashFlowPerShare"`
 
 	// Other metrics
-	NetIncomePerEBT        float64 `json:"netIncomePerEBT"`
-	EbtPerEbit             float64 `json:"ebtPerEbit"`
-	EffectiveTaxRate       float64 `json:"effectiveTaxRate"`
+	NetIncomePerEBT         float64 `json:"netIncomePerEBT"`
+	EbtPerEbit              float64 `json:"ebtPerEbit"`
+	EffectiveTaxRate        float64 `json:"effectiveTaxRate"`
 	EnterpriseValueMultiple float64 `json:"enterpriseValueMultiple"`
 }
 

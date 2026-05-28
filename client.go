@@ -15,9 +15,9 @@ import (
 type Client struct {
 	http *httpclient.Client
 
-	Company    *company.Client      // 회사 정보(프로필 등)
-	Statements *statements.Client   // 재무제표(소득, 대차대조표 등)
-	Ratios     *ratios.Client       // 재무비율
+	Company    *company.Client    // 회사 정보(프로필 등)
+	Statements *statements.Client // 재무제표(소득, 대차대조표 등)
+	Ratios     *ratios.Client     // 재무비율
 }
 
 // NewClient 는 API 키로 Client 를 만든다.
