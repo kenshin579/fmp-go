@@ -50,7 +50,6 @@ type BalanceSheetStatement struct {
 	OtherCurrentLiabilities                 int64  `json:"otherCurrentLiabilities"`
 	TotalCurrentLiabilities                 int64  `json:"totalCurrentLiabilities"`
 	LongTermDebt                            int64  `json:"longTermDebt"`
-	CapitalLeaseObligationsNonCurrent       int64  `json:"capitalLeaseObligationsNonCurrent"`
 	DeferredRevenueNonCurrent               int64  `json:"deferredRevenueNonCurrent"`
 	DeferredTaxLiabilitiesNonCurrent        int64  `json:"deferredTaxLiabilitiesNonCurrent"`
 	OtherNonCurrentLiabilities              int64  `json:"otherNonCurrentLiabilities"`
