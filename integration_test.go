@@ -63,3 +63,20 @@ func TestIntegration_Ratios(t *testing.T) {
 		t.Error("empty ratios rows")
 	}
 }
+
+func TestIntegration_BalanceSheetStatement(t *testing.T) {
+	if os.Getenv("FMP_API_KEY") == "" {
+		t.Skip("FMP_API_KEY not set")
+	}
+	c, err := fmp.NewClientFromEnv()
+	if err != nil {
+		t.Fatalf("NewClientFromEnv: %v", err)
+	}
+	rows, err := c.Statements.BalanceSheetStatement(context.Background(), statements.Params{Symbol: "AAPL", Period: "annual", Limit: 2})
+	if err != nil {
+		t.Fatalf("BalanceSheetStatement: %v", err)
+	}
+	if len(rows) == 0 || rows[0].TotalAssets <= 0 {
+		t.Errorf("unexpected: %+v", rows)
+	}
+}

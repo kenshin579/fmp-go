@@ -54,3 +54,11 @@ func TestBalanceSheetStatement_EmptyArrayIsNotFound(t *testing.T) {
 		t.Fatalf("want ErrNotFound, got %v", err)
 	}
 }
+
+func TestBalanceSheetStatement_EmptySymbol(t *testing.T) {
+	c, cleanup := newTestClient(t, http.StatusOK, `[]`)
+	defer cleanup()
+	if _, err := c.BalanceSheetStatement(context.Background(), Params{Symbol: "  "}); err == nil {
+		t.Fatal("expected error for empty symbol")
+	}
+}
