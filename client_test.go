@@ -40,3 +40,16 @@ func TestNewClientFromEnv_Reads(t *testing.T) {
 		t.Fatal("Company nil")
 	}
 }
+
+func TestNewClient_HasStatementsAndRatios(t *testing.T) {
+	c, err := fmp.NewClient("k123")
+	if err != nil {
+		t.Fatalf("NewClient: %v", err)
+	}
+	if c.Statements == nil {
+		t.Fatal("Statements nil")
+	}
+	if c.Ratios == nil {
+		t.Fatal("Ratios nil")
+	}
+}
