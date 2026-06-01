@@ -53,3 +53,13 @@ func TestNewClient_HasStatementsAndRatios(t *testing.T) {
 		t.Fatal("Ratios nil")
 	}
 }
+
+func TestNewClient_HasQuote(t *testing.T) {
+	c, err := fmp.NewClient("k")
+	if err != nil {
+		t.Fatalf("NewClient: %v", err)
+	}
+	if c.Quote == nil {
+		t.Fatal("Quote sub-client is nil")
+	}
+}
