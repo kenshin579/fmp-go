@@ -1,0 +1,4 @@
+[
+  { "symbol": "AAPL", "price": 232.53, "tradeSize": 132, "timestamp": 1738715334311 },
+  { "symbol": "MSFT", "price": 410.2, "tradeSize": 50, "timestamp": 1738715334311 }
+]
