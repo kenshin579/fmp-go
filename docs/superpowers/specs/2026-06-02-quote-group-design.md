@@ -35,7 +35,7 @@ fmp-go 는 현재 263 endpoint 중 4개(profile / income / balance / ratios)만 
 | | `AftermarketTrade(ctx, symbol)` | `/stable/aftermarket-trade` | `*AftermarketTrade` |
 | | `BatchAftermarketQuote(ctx, symbols...)` | `/stable/batch-aftermarket-quote` | `[]AftermarketQuote` |
 | | `BatchAftermarketTrade(ctx, symbols...)` | `/stable/batch-aftermarket-trade` | `[]AftermarketTrade` |
-| `asset_class.go` | `ExchangeQuotes(ctx, exchange)` | `/stable/batch-exchange-quote` | `[]Quote` |
+| `asset_class.go` | `ExchangeQuotes(ctx, exchange)` | `/stable/batch-exchange-quote` | `[]QuoteShort` |
 | | `IndexQuotes(ctx)` | `/stable/batch-index-quotes` | `[]QuoteShort` |
 | | `CommodityQuotes(ctx)` | `/stable/batch-commodity-quotes` | `[]QuoteShort` |
 | | `CryptoQuotes(ctx)` | `/stable/batch-crypto-quotes` | `[]QuoteShort` |
@@ -49,7 +49,7 @@ fmp-go 는 현재 263 endpoint 중 4개(profile / income / balance / ratios)만 
 ## 응답 타입 (faithful, 필드 주석 포함)
 
 ```go
-// Quote — 전체 시세 (quote / batch-quote / exchange-quote 공용)
+// Quote — 전체 시세 (quote / batch-quote 공용)
 type Quote struct {
 	Symbol           string  `json:"symbol"`           // 종목 심볼 (예: AAPL)
 	Name             string  `json:"name"`             // 종목명
@@ -165,7 +165,7 @@ type Client struct {
 - **WebSocket 실시간 스트림** — FMP 별도 상품, REST quote 그룹과 무관.
 
 ## 위험 / 주의
-- asset-class 응답 shape 가정(exchange=full / 나머지=short) — fixture 로 확정, 다르면 별도 struct.
+- asset-class 응답 shape: `ExchangeQuotes` 는 `QuoteShort`(구현 확정), 나머지 자산군도 모두 `QuoteShort`. (당초 exchange=full `Quote` 가정은 fixture 검증 후 정정됨.)
 - 카탈로그 파일명 ≠ 실제 path — 각 .md 의 `GET` 줄 정확히 따름.
 - 큰 정수(marketCap >2^53) 지수표기 시 디코딩 정밀도 — fixture 확인.
 - rate limit — SDK 는 호출만, 한도 관리는 소비자 책임(README 명시).
