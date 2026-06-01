@@ -80,3 +80,34 @@ func TestIntegration_BalanceSheetStatement(t *testing.T) {
 		t.Errorf("unexpected: %+v", rows)
 	}
 }
+
+func TestIntegration_Quote(t *testing.T) {
+	if os.Getenv("FMP_API_KEY") == "" {
+		t.Skip("FMP_API_KEY 미설정 — 통합 테스트 skip")
+	}
+	c, err := fmp.NewClientFromEnv()
+	if err != nil {
+		t.Fatalf("NewClientFromEnv: %v", err)
+	}
+	ctx := context.Background()
+
+	q, err := c.Quote.Quote(ctx, "AAPL")
+	if err != nil {
+		t.Fatalf("Quote: %v", err)
+	}
+	if q.Symbol != "AAPL" || q.Price <= 0 {
+		t.Errorf("quote = %+v", q)
+	}
+	if _, err := c.Quote.QuoteShort(ctx, "AAPL"); err != nil {
+		t.Errorf("QuoteShort: %v", err)
+	}
+	if _, err := c.Quote.PriceChange(ctx, "AAPL"); err != nil {
+		t.Errorf("PriceChange: %v", err)
+	}
+	if rows, err := c.Quote.BatchQuote(ctx, "AAPL", "MSFT"); err != nil || len(rows) == 0 {
+		t.Errorf("BatchQuote: err=%v len=%d", err, len(rows))
+	}
+	if rows, err := c.Quote.CryptoQuotes(ctx); err != nil || len(rows) == 0 {
+		t.Errorf("CryptoQuotes: err=%v len=%d", err, len(rows))
+	}
+}
