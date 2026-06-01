@@ -1,0 +1,4 @@
+[
+  { "symbol": "AAPL", "bidSize": 1, "bidPrice": 232.45, "askSize": 3, "askPrice": 232.64, "volume": 41647042, "timestamp": 1738715334311 },
+  { "symbol": "MSFT", "bidSize": 2, "bidPrice": 410.1, "askSize": 1, "askPrice": 410.4, "volume": 9000000, "timestamp": 1738715334311 }
+]

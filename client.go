@@ -7,6 +7,7 @@ import (
 
 	"github.com/kenshin579/fmp-go/company"
 	"github.com/kenshin579/fmp-go/internal/httpclient"
+	"github.com/kenshin579/fmp-go/quote"
 	"github.com/kenshin579/fmp-go/ratios"
 	"github.com/kenshin579/fmp-go/statements"
 )
@@ -18,6 +19,7 @@ type Client struct {
 	Company    *company.Client    // 회사 정보(프로필 등)
 	Statements *statements.Client // 재무제표(소득, 대차대조표 등)
 	Ratios     *ratios.Client     // 재무비율
+	Quote      *quote.Client      // 시세(실시간/배치/자산군)
 }
 
 // NewClient 는 API 키로 Client 를 만든다.
@@ -39,5 +41,6 @@ func NewClient(apiKey string, opts ...Option) (*Client, error) {
 	c.Company = company.New(hc)
 	c.Statements = statements.New(hc)
 	c.Ratios = ratios.New(hc)
+	c.Quote = quote.New(hc)
 	return c, nil
 }
