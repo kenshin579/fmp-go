@@ -117,3 +117,76 @@ func TestList_Delegation(t *testing.T) {
 		t.Errorf("path=%q want /stable/commitment-of-traders-list", cap.path)
 	}
 }
+
+func TestReport_Parse(t *testing.T) {
+	raw, _ := os.ReadFile("testdata/report.json")
+	c, cleanup := newTestClient(t, http.StatusOK, string(raw))
+	defer cleanup()
+
+	rows, err := c.Report(context.Background(), "KC", "", "")
+	if err != nil || len(rows) != 1 {
+		t.Fatalf("err=%v len=%d", err, len(rows))
+	}
+	r := rows[0]
+
+	// 식별 필드
+	if r.Symbol != "KC" {
+		t.Errorf("Symbol=%q want KC", r.Symbol)
+	}
+	if r.Name == "" {
+		t.Errorf("Name should not be empty")
+	}
+
+	// int64 포지션 블록
+	if r.OpenInterestAll == 0 {
+		t.Errorf("OpenInterestAll should be non-zero")
+	}
+
+	// float64 pct 블록
+	if r.PctOfOpenInterestAll == 0 {
+		t.Errorf("PctOfOpenInterestAll should be non-zero")
+	}
+
+	// FMP 오타 "Spead" — ChangeInNoncommSpeadAll
+	if r.ChangeInNoncommSpeadAll == 0 {
+		t.Errorf("ChangeInNoncommSpeadAll should be non-zero (typo key maps)")
+	}
+
+	// traders 블록
+	if r.TradersTotAll == 0 {
+		t.Errorf("TradersTotAll should be non-zero")
+	}
+
+	// traders Old 오타 "Spead" — TradersNoncommSpeadOl
+	if r.TradersNoncommSpeadOl == 0 {
+		t.Errorf("TradersNoncommSpeadOl should be non-zero (typo key maps)")
+	}
+
+	// conc 블록 (float64)
+	if r.ConcGrossLe4TdrLongAll == 0 {
+		t.Errorf("ConcGrossLe4TdrLongAll should be non-zero")
+	}
+}
+
+func TestReport_Delegation(t *testing.T) {
+	raw, _ := os.ReadFile("testdata/report.json")
+	c, cap, cleanup := newCapturingClient(t, string(raw))
+	defer cleanup()
+
+	_, err := c.Report(context.Background(), "ES", "2025-01-01", "2025-02-04")
+	if err != nil {
+		t.Fatalf("err=%v", err)
+	}
+	if cap.path != "/stable/commitment-of-traders-report" {
+		t.Errorf("path=%q want /stable/commitment-of-traders-report", cap.path)
+	}
+	if cap.query.Get("symbol") != "ES" {
+		t.Errorf("symbol=%q want ES", cap.query.Get("symbol"))
+	}
+	if cap.query.Get("from") != "2025-01-01" {
+		t.Errorf("from=%q want 2025-01-01", cap.query.Get("from"))
+	}
+	if cap.query.Get("to") != "2025-02-04" {
+		t.Errorf("to=%q want 2025-02-04", cap.query.Get("to"))
+	}
+}
