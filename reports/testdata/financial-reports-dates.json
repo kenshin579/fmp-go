@@ -1,0 +1,1 @@
+[{ "symbol": "AAPL", "fiscalYear": 2022, "period": "FY", "linkXlsx": "https://fmpcloud.io/api/v4/financial-reports-xlsx?symbol=AAPL&year=2022&period=FY", "linkJson": "https://fmpcloud.io/api/v4/financial-reports-json?symbol=AAPL&year=2022&period=FY" }]
