@@ -1,0 +1,4 @@
+[
+	{ "symbol": "ABCD", "price": 12.34, "name": "ABCD Corp", "change": 3.21, "changesPercentage": 35.12, "exchange": "NASDAQ" },
+	{ "symbol": "WXYZ", "price": 8.50, "name": "WXYZ Inc", "change": 1.75, "changesPercentage": 25.93, "exchange": "NYSE" }
+]
