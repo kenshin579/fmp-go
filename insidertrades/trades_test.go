@@ -11,16 +11,6 @@ import (
 	"github.com/kenshin579/fmp-go/internal/httpclient"
 )
 
-func newTestClient(t *testing.T, status int, body string) (*Client, func()) {
-	t.Helper()
-	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.WriteHeader(status)
-		_, _ = w.Write([]byte(body))
-	}))
-	c := New(httpclient.New(httpclient.Config{APIKey: "k", BaseURL: srv.URL}))
-	return c, srv.Close
-}
-
 type capturedReq struct {
 	path  string
 	query url.Values
@@ -118,6 +108,3 @@ func TestSearchInsiderTrades_Parse(t *testing.T) {
 		t.Errorf("TransactionType empty")
 	}
 }
-
-// newTestClient 는 status/body 고정 서버를 만든다 (파싱 오류 테스트용 예비).
-var _ = newTestClient
