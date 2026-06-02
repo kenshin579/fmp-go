@@ -204,6 +204,32 @@ func TestIntegration_Calendar(t *testing.T) {
 	}
 }
 
+func TestIntegration_StatementsCore(t *testing.T) {
+	if os.Getenv("FMP_API_KEY") == "" {
+		t.Skip("FMP_API_KEY 미설정 — skip")
+	}
+	c, err := fmp.NewClientFromEnv()
+	if err != nil {
+		t.Fatal(err)
+	}
+	ctx := context.Background()
+
+	if rows, err := c.Statements.CashFlowStatement(ctx, statements.Params{Symbol: "AAPL", Period: "annual", Limit: 2}); err != nil || len(rows) == 0 || rows[0].FreeCashFlow == 0 {
+		t.Errorf("CashFlowStatement: err=%v len=%d", err, len(rows))
+	}
+	if rows, err := c.Statements.IncomeStatementTTM(ctx, statements.Params{Symbol: "AAPL"}); err != nil || len(rows) == 0 || rows[0].Revenue == 0 {
+		t.Errorf("IncomeStatementTTM: err=%v len=%d", err, len(rows))
+	}
+	if rows, err := c.Statements.CashFlowStatementGrowth(ctx, statements.Params{Symbol: "AAPL", Period: "annual"}); err != nil || len(rows) == 0 {
+		t.Errorf("CashFlowStatementGrowth: err=%v len=%d", err, len(rows))
+	}
+	if rows, err := c.Statements.FinancialStatementGrowth(ctx, statements.Params{Symbol: "AAPL", Period: "annual"}); err != nil || len(rows) == 0 {
+		t.Errorf("FinancialStatementGrowth: err=%v len=%d", err, len(rows))
+	} else {
+		t.Logf("FinancialStatementGrowth[0]: %+v", rows[0]) // nullable 5필드 실제값 확인
+	}
+}
+
 func TestIntegration_Quote(t *testing.T) {
 	if os.Getenv("FMP_API_KEY") == "" {
 		t.Skip("FMP_API_KEY 미설정 — 통합 테스트 skip")

@@ -1,12 +1,6 @@
 package statements
 
-import (
-	"context"
-	"fmt"
-	"strings"
-
-	"github.com/kenshin579/fmp-go/internal/httpclient"
-)
+import "context"
 
 // IncomeStatement 는 FMP /stable/income-statement 응답 한 기간(연간/분기).
 // 필드는 FMP 응답을 충실히 매핑한다(faithful).
@@ -54,15 +48,5 @@ type IncomeStatement struct {
 
 // IncomeStatement 는 종목의 손익계산서 시계열을 조회한다. 결과가 없으면 httpclient.ErrNotFound.
 func (c *Client) IncomeStatement(ctx context.Context, p Params) ([]IncomeStatement, error) {
-	if strings.TrimSpace(p.Symbol) == "" {
-		return nil, fmt.Errorf("fmp: symbol must not be empty")
-	}
-	var out []IncomeStatement
-	if err := c.http.GetJSON(ctx, "/stable/income-statement", p.queryParams(), &out); err != nil {
-		return nil, err
-	}
-	if len(out) == 0 {
-		return nil, httpclient.ErrNotFound
-	}
-	return out, nil
+	return fetchList[IncomeStatement](ctx, c, "/stable/income-statement", p, p.queryParams())
 }

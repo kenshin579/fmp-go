@@ -1,12 +1,6 @@
 package statements
 
-import (
-	"context"
-	"fmt"
-	"strings"
-
-	"github.com/kenshin579/fmp-go/internal/httpclient"
-)
+import "context"
 
 // BalanceSheetStatement 는 FMP /stable/balance-sheet-statement 응답 한 기간.
 // 필드는 FMP 응답을 충실히 매핑한다(faithful).
@@ -75,15 +69,5 @@ type BalanceSheetStatement struct {
 
 // BalanceSheetStatement 는 종목의 대차대조표 시계열을 조회한다. 결과가 없으면 httpclient.ErrNotFound.
 func (c *Client) BalanceSheetStatement(ctx context.Context, p Params) ([]BalanceSheetStatement, error) {
-	if strings.TrimSpace(p.Symbol) == "" {
-		return nil, fmt.Errorf("fmp: symbol must not be empty")
-	}
-	var out []BalanceSheetStatement
-	if err := c.http.GetJSON(ctx, "/stable/balance-sheet-statement", p.queryParams(), &out); err != nil {
-		return nil, err
-	}
-	if len(out) == 0 {
-		return nil, httpclient.ErrNotFound
-	}
-	return out, nil
+	return fetchList[BalanceSheetStatement](ctx, c, "/stable/balance-sheet-statement", p, p.queryParams())
 }
