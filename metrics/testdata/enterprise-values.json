@@ -1,0 +1,12 @@
+[
+  {
+    "symbol": "AAPL",
+    "date": "2025-09-27",
+    "stockPrice": 227.79,
+    "numberOfShares": 15204137000,
+    "marketCapitalization": 3462500000000,
+    "minusCashAndCashEquivalents": -29943000000,
+    "addTotalDebt": 97341000000,
+    "enterpriseValue": 3529898000000
+  }
+]

@@ -1,0 +1,14 @@
+[
+  {
+    "symbol": "AAPL",
+    "reportedCurrency": "USD",
+    "fiscalYear": "2025",
+    "period": "FY",
+    "date": "2025-09-27",
+    "averagePPE": 0.10234567890123456,
+    "maintenanceCapex": -11456000000,
+    "ownersEarnings": 94321000000,
+    "growthCapex": -1234000000,
+    "ownersEarningsPerShare": 1.83
+  }
+]
