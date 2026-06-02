@@ -51,6 +51,29 @@ func TestCustomLeveredDiscountedCashFlow_Parse(t *testing.T) {
 	if rows[0].WACC == 0 {
 		t.Errorf("WACC must not be zero")
 	}
+	if rows[0].CostOfDebt == 0 { // costofDebt 키 매핑 확인
+		t.Errorf("CostOfDebt must not be zero")
+	}
+	if rows[0].PvLfcf == 0 { // pvLfcf 키 매핑 확인
+		t.Errorf("PvLfcf must not be zero")
+	}
+}
+
+func TestCustomLeveredDiscountedCashFlow_Delegation(t *testing.T) {
+	raw, _ := os.ReadFile("testdata/custom-levered-discounted-cash-flow.json")
+	c, cap, cleanup := newCapturingClient(t, string(raw))
+	defer cleanup()
+
+	_, err := c.CustomLeveredDiscountedCashFlow(context.Background(), CustomDCFParams{Symbol: "AAPL"})
+	if err != nil {
+		t.Fatalf("err=%v", err)
+	}
+	if cap.path != "/stable/custom-levered-discounted-cash-flow" {
+		t.Errorf("path=%q want /stable/custom-levered-discounted-cash-flow", cap.path)
+	}
+	if cap.query.Get("symbol") != "AAPL" {
+		t.Errorf("symbol=%q", cap.query.Get("symbol"))
+	}
 }
 
 func TestCustomDiscountedCashFlow_Delegation(t *testing.T) {
