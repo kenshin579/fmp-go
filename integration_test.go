@@ -207,6 +207,27 @@ func TestIntegration_Calendar(t *testing.T) {
 	}
 }
 
+func TestIntegration_Fundraisers(t *testing.T) {
+	if os.Getenv("FMP_API_KEY") == "" {
+		t.Skip("FMP_API_KEY 미설정 — skip")
+	}
+	c, err := fmp.NewClientFromEnv()
+	if err != nil {
+		t.Fatal(err)
+	}
+	ctx := context.Background()
+
+	if _, err := c.Fundraisers.LatestCrowdfunding(ctx, 0, 5); err != nil {
+		t.Errorf("LatestCrowdfunding: %v", err)
+	}
+	if _, err := c.Fundraisers.LatestEquityOffering(ctx, 0, 5, ""); err != nil {
+		t.Errorf("LatestEquityOffering: %v", err)
+	}
+	if _, err := c.Fundraisers.EquityOfferingSearch(ctx, "Tesla"); err != nil {
+		t.Errorf("EquityOfferingSearch: %v", err)
+	}
+}
+
 func TestIntegration_COT(t *testing.T) {
 	if os.Getenv("FMP_API_KEY") == "" {
 		t.Skip("FMP_API_KEY 미설정 — skip")

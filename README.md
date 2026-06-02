@@ -46,6 +46,7 @@ fmt.Println(profile.CompanyName, profile.CEO, profile.Website)
 | ESG | `client.ESG` | Ratings, Disclosures, Benchmark — 3 endpoint |
 | Earnings Transcripts | `client.EarningsTranscripts` | Transcript, Latest, Dates — 3 endpoint |
 | Commitment of Traders | `client.COT` | Report, Analysis, List — 3 endpoint |
+| Fundraisers | `client.Fundraisers` | LatestCrowdfunding, CrowdfundingByCIK, CrowdfundingSearch, LatestEquityOffering, EquityOfferingByCIK, EquityOfferingSearch — 6 endpoint |
 | Quote | `client.Quote` | Quote, QuoteShort, PriceChange, AftermarketQuote/Trade, Batch(Quote/Short/Aftermarket), 자산군(Exchange/Index/Commodity/Crypto/ETF/Forex/MutualFund) — 16 endpoint |
 | Search | `client.Search` | SearchSymbol, SearchName, SearchCIK, SearchCUSIP, SearchISIN, SearchExchangeVariants, CompanyScreener — 7 endpoint |
 | News | `client.News` | StockNewsLatest, CryptoNewsLatest, ForexNewsLatest, GeneralNewsLatest, PressReleasesLatest, SearchStockNews, SearchCryptoNews, SearchForexNews, SearchPressReleases, FMPArticles — 10 endpoint |
