@@ -1,0 +1,4 @@
+[
+  { "symbol": "AAPL", "name": "Apple Inc.", "currency": "USD", "exchangeFullName": "NASDAQ Global Select", "exchange": "NASDAQ" },
+  { "symbol": "APLE", "name": "Apple Hospitality REIT, Inc.", "currency": "USD", "exchangeFullName": "New York Stock Exchange", "exchange": "NYSE" }
+]
