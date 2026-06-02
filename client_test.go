@@ -293,3 +293,13 @@ func TestNewClient_HasAssets(t *testing.T) {
 		t.Fatal("Assets sub-client is nil")
 	}
 }
+
+func TestNewClient_HasBulk(t *testing.T) {
+	c, err := fmp.NewClient("k")
+	if err != nil {
+		t.Fatalf("NewClient: %v", err)
+	}
+	if c.Bulk == nil {
+		t.Fatal("Bulk sub-client is nil")
+	}
+}

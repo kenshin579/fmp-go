@@ -51,6 +51,7 @@ fmt.Println(profile.CompanyName, profile.CEO, profile.Website)
 | ETF & Mutual Funds | `client.ETF` | Holdings, Information, CountryWeightings, SectorWeightings, AssetExposure, DisclosureHoldersSearch, DisclosureDates, LatestDisclosureHolders, Disclosure — 9 endpoint |
 | SEC Filings | `client.SECFilings` | LatestFinancials, Latest8K, SearchBySymbol, SearchByCIK, SearchByFormType, SearchByName, CompanySearchBySymbol, CompanySearchByCIK, Profile, IndustryClassificationList, IndustryClassificationSearch, AllIndustryClassification — 12 endpoint |
 | Assets | `client.Assets` | CryptoList, ForexList, CommodityList — 3 endpoint (암호화폐/외환/원자재 시세·시계열은 `client.Quote`/`client.Chart` 사용) |
+| Bulk | `client.Bulk` | Profile, ETFHolder, EOD, IncomeStatement(+Growth), BalanceSheetStatement(+Growth), CashFlowStatement(+Growth), EarningsSurprises, RatiosTTM, KeyMetricsTTM, Scores, DCF, Peers, PriceTargetSummary, Rating, UpgradesDowngradesConsensus — 18 endpoint (원시 CSV `[]byte` 반환) |
 | Quote | `client.Quote` | Quote, QuoteShort, PriceChange, AftermarketQuote/Trade, Batch(Quote/Short/Aftermarket), 자산군(Exchange/Index/Commodity/Crypto/ETF/Forex/MutualFund) — 16 endpoint |
 | Search | `client.Search` | SearchSymbol, SearchName, SearchCIK, SearchCUSIP, SearchISIN, SearchExchangeVariants, CompanyScreener — 7 endpoint |
 | News | `client.News` | StockNewsLatest, CryptoNewsLatest, ForexNewsLatest, GeneralNewsLatest, PressReleasesLatest, SearchStockNews, SearchCryptoNews, SearchForexNews, SearchPressReleases, FMPArticles — 10 endpoint |
