@@ -213,3 +213,13 @@ func TestNewClient_HasSenate(t *testing.T) {
 		t.Fatal("Senate sub-client is nil")
 	}
 }
+
+func TestNewClient_HasESG(t *testing.T) {
+	c, err := fmp.NewClient("k")
+	if err != nil {
+		t.Fatalf("NewClient: %v", err)
+	}
+	if c.ESG == nil {
+		t.Fatal("ESG sub-client is nil")
+	}
+}

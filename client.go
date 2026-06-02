@@ -12,6 +12,7 @@ import (
 	"github.com/kenshin579/fmp-go/dcf"
 	"github.com/kenshin579/fmp-go/directory"
 	"github.com/kenshin579/fmp-go/economics"
+	"github.com/kenshin579/fmp-go/esg"
 	"github.com/kenshin579/fmp-go/insidertrades"
 	"github.com/kenshin579/fmp-go/internal/httpclient"
 	"github.com/kenshin579/fmp-go/markethours"
@@ -51,6 +52,7 @@ type Client struct {
 	TechnicalIndicators *technicals.Client    // 기술 지표(SMA/EMA/RSI/ADX 등)
 	DCF                 *dcf.Client           // DCF 밸류에이션
 	Senate              *senate.Client        // 의회(상원/하원) 거래 공시
+	ESG                 *esg.Client           // ESG 평가/공시/벤치마크
 }
 
 // NewClient 는 API 키로 Client 를 만든다.
@@ -88,5 +90,6 @@ func NewClient(apiKey string, opts ...Option) (*Client, error) {
 	c.TechnicalIndicators = technicals.New(hc)
 	c.DCF = dcf.New(hc)
 	c.Senate = senate.New(hc)
+	c.ESG = esg.New(hc)
 	return c, nil
 }
