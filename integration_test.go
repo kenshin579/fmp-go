@@ -205,6 +205,27 @@ func TestIntegration_Calendar(t *testing.T) {
 	}
 }
 
+func TestIntegration_MarketHours(t *testing.T) {
+	if os.Getenv("FMP_API_KEY") == "" {
+		t.Skip("FMP_API_KEY 미설정 — skip")
+	}
+	c, err := fmp.NewClientFromEnv()
+	if err != nil {
+		t.Fatal(err)
+	}
+	ctx := context.Background()
+
+	if rows, err := c.MarketHours.AllExchangeMarketHours(ctx); err != nil || len(rows) == 0 {
+		t.Errorf("AllExchangeMarketHours: err=%v len=%d", err, len(rows))
+	}
+	if rows, err := c.MarketHours.ExchangeMarketHours(ctx, "NASDAQ"); err != nil || len(rows) == 0 || rows[0].Exchange == "" {
+		t.Errorf("ExchangeMarketHours: err=%v len=%d", err, len(rows))
+	}
+	if _, err := c.MarketHours.HolidaysByExchange(ctx, "NASDAQ", "", ""); err != nil {
+		t.Errorf("HolidaysByExchange: %v", err)
+	}
+}
+
 func TestIntegration_Economics(t *testing.T) {
 	if os.Getenv("FMP_API_KEY") == "" {
 		t.Skip("FMP_API_KEY 미설정 — skip")

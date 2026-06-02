@@ -38,6 +38,7 @@ fmt.Println(profile.CompanyName, profile.CEO, profile.Website)
 | Market Performance | `client.MarketPerformance` | BiggestGainers, BiggestLosers, MostActives, SectorPerformanceSnapshot, IndustryPerformanceSnapshot, HistoricalSectorPerformance, HistoricalIndustryPerformance, SectorPESnapshot, IndustryPESnapshot, HistoricalSectorPE, HistoricalIndustryPE — 11 endpoint |
 | Directory | `client.Directory` | CompanySymbolsList, FinancialSymbolsList, CIKList, SymbolChangesList, ETFsList, ActivelyTradingList, EarningsTranscriptList, AvailableExchanges, AvailableSectors, AvailableIndustries, AvailableCountries — 11 endpoint |
 | Economics | `client.Economics` | TreasuryRates, EconomicIndicators, EconomicCalendar, MarketRiskPremium — 4 endpoint |
+| Market Hours | `client.MarketHours` | ExchangeMarketHours, AllExchangeMarketHours, HolidaysByExchange — 3 endpoint |
 | Quote | `client.Quote` | Quote, QuoteShort, PriceChange, AftermarketQuote/Trade, Batch(Quote/Short/Aftermarket), 자산군(Exchange/Index/Commodity/Crypto/ETF/Forex/MutualFund) — 16 endpoint |
 | Search | `client.Search` | SearchSymbol, SearchName, SearchCIK, SearchCUSIP, SearchISIN, SearchExchangeVariants, CompanyScreener — 7 endpoint |
 | News | `client.News` | StockNewsLatest, CryptoNewsLatest, ForexNewsLatest, GeneralNewsLatest, PressReleasesLatest, SearchStockNews, SearchCryptoNews, SearchForexNews, SearchPressReleases, FMPArticles — 10 endpoint |
