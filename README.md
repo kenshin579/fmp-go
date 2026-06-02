@@ -31,7 +31,8 @@ fmt.Println(profile.CompanyName, profile.CEO, profile.Website)
 | Analyst | `client.Analyst` | Grades, GradesConsensus, HistoricalGrades, RatingsSnapshot, HistoricalRatings, PriceTargetConsensus, PriceTargetSummary, FinancialEstimates — 8 endpoint |
 | Company | `client.Company` | Profile, ProfileByCIK, MarketCap(+historical/batch), SharesFloat(+all), EmployeeCount(+historical), KeyExecutives, ExecutiveCompensation(+benchmark), StockPeers, CompanyNotes, Mergers(latest/search), DelistedCompanies — 17 endpoint |
 | Statements | `client.Statements` | IncomeStatement, BalanceSheetStatement, CashFlowStatement, IncomeStatementTTM, BalanceSheetStatementTTM, CashFlowStatementTTM, IncomeStatementGrowth, BalanceSheetStatementGrowth, CashFlowStatementGrowth, FinancialStatementGrowth — 10 endpoint |
-| Ratios | `client.Ratios` | Ratios |
+| Ratios | `client.Ratios` | Ratios, RatiosTTM — 2 endpoint |
+| Metrics | `client.Metrics` | KeyMetrics, KeyMetricsTTM, FinancialScores, OwnerEarnings, EnterpriseValues, RevenueGeographicSegmentation, RevenueProductSegmentation — 7 endpoint |
 | Quote | `client.Quote` | Quote, QuoteShort, PriceChange, AftermarketQuote/Trade, Batch(Quote/Short/Aftermarket), 자산군(Exchange/Index/Commodity/Crypto/ETF/Forex/MutualFund) — 16 endpoint |
 | Search | `client.Search` | SearchSymbol, SearchName, SearchCIK, SearchCUSIP, SearchISIN, SearchExchangeVariants, CompanyScreener — 7 endpoint |
 | News | `client.News` | StockNewsLatest, CryptoNewsLatest, ForexNewsLatest, GeneralNewsLatest, PressReleasesLatest, SearchStockNews, SearchCryptoNews, SearchForexNews, SearchPressReleases, FMPArticles — 10 endpoint |

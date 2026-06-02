@@ -204,6 +204,32 @@ func TestIntegration_Calendar(t *testing.T) {
 	}
 }
 
+func TestIntegration_Metrics(t *testing.T) {
+	if os.Getenv("FMP_API_KEY") == "" {
+		t.Skip("FMP_API_KEY 미설정 — skip")
+	}
+	c, err := fmp.NewClientFromEnv()
+	if err != nil {
+		t.Fatal(err)
+	}
+	ctx := context.Background()
+
+	if rows, err := c.Metrics.KeyMetrics(ctx, "AAPL", "annual", 2); err != nil || len(rows) == 0 || rows[0].MarketCap == 0 {
+		t.Errorf("KeyMetrics: err=%v len=%d", err, len(rows))
+	} else {
+		t.Logf("KeyMetrics[0]: %+v", rows[0]) // 절대값 타입 확인
+	}
+	if s, err := c.Metrics.FinancialScores(ctx, "AAPL"); err != nil || s.PiotroskiScore < 0 || s.PiotroskiScore > 9 {
+		t.Errorf("FinancialScores: err=%v s=%+v", err, s)
+	}
+	if rows, err := c.Metrics.RevenueProductSegmentation(ctx, "AAPL", "annual"); err != nil || len(rows) == 0 || len(rows[0].Data) == 0 {
+		t.Errorf("RevenueProductSegmentation: err=%v len=%d", err, len(rows))
+	}
+	if rows, err := c.Ratios.RatiosTTM(ctx, "AAPL"); err != nil || len(rows) == 0 {
+		t.Errorf("RatiosTTM: err=%v len=%d", err, len(rows))
+	}
+}
+
 func TestIntegration_StatementsCore(t *testing.T) {
 	if os.Getenv("FMP_API_KEY") == "" {
 		t.Skip("FMP_API_KEY 미설정 — skip")

@@ -9,6 +9,7 @@ import (
 	"github.com/kenshin579/fmp-go/calendar"
 	"github.com/kenshin579/fmp-go/company"
 	"github.com/kenshin579/fmp-go/internal/httpclient"
+	"github.com/kenshin579/fmp-go/metrics"
 	"github.com/kenshin579/fmp-go/news"
 	"github.com/kenshin579/fmp-go/quote"
 	"github.com/kenshin579/fmp-go/ratios"
@@ -28,6 +29,7 @@ type Client struct {
 	Search     *search.Client     // 검색(심볼/식별자/스크리너)
 	News       *news.Client       // 뉴스(주식/암호화폐/외환/보도자료/일반)
 	Calendar   *calendar.Client   // 캘린더(배당/실적/IPO/분할)
+	Metrics    *metrics.Client    // 지표(key-metrics/scores/owner-earnings/EV/segments)
 }
 
 // NewClient 는 API 키로 Client 를 만든다.
@@ -54,5 +56,6 @@ func NewClient(apiKey string, opts ...Option) (*Client, error) {
 	c.Search = search.New(hc)
 	c.News = news.New(hc)
 	c.Calendar = calendar.New(hc)
+	c.Metrics = metrics.New(hc)
 	return c, nil
 }
