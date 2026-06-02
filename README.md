@@ -33,6 +33,7 @@ fmt.Println(profile.CompanyName, profile.CEO, profile.Website)
 | Statements | `client.Statements` | IncomeStatement, BalanceSheetStatement, CashFlowStatement, IncomeStatementTTM, BalanceSheetStatementTTM, CashFlowStatementTTM, IncomeStatementGrowth, BalanceSheetStatementGrowth, CashFlowStatementGrowth, FinancialStatementGrowth — 10 endpoint |
 | Ratios | `client.Ratios` | Ratios, RatiosTTM — 2 endpoint |
 | Metrics | `client.Metrics` | KeyMetrics, KeyMetricsTTM, FinancialScores, OwnerEarnings, EnterpriseValues, RevenueGeographicSegmentation, RevenueProductSegmentation — 7 endpoint |
+| Reports | `client.Reports` | IncomeStatementAsReported, BalanceSheetStatementAsReported, CashFlowStatementAsReported, FinancialStatementFullAsReported, LatestFinancialStatements, FinancialReportDates, FinancialReportJSON — 7 endpoint |
 | Quote | `client.Quote` | Quote, QuoteShort, PriceChange, AftermarketQuote/Trade, Batch(Quote/Short/Aftermarket), 자산군(Exchange/Index/Commodity/Crypto/ETF/Forex/MutualFund) — 16 endpoint |
 | Search | `client.Search` | SearchSymbol, SearchName, SearchCIK, SearchCUSIP, SearchISIN, SearchExchangeVariants, CompanyScreener — 7 endpoint |
 | News | `client.News` | StockNewsLatest, CryptoNewsLatest, ForexNewsLatest, GeneralNewsLatest, PressReleasesLatest, SearchStockNews, SearchCryptoNews, SearchForexNews, SearchPressReleases, FMPArticles — 10 endpoint |
