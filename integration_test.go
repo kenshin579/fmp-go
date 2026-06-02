@@ -132,6 +132,27 @@ func TestIntegration_Search(t *testing.T) {
 	}
 }
 
+func TestIntegration_News(t *testing.T) {
+	if os.Getenv("FMP_API_KEY") == "" {
+		t.Skip("FMP_API_KEY 미설정 — skip")
+	}
+	c, err := fmp.NewClientFromEnv()
+	if err != nil {
+		t.Fatal(err)
+	}
+	ctx := context.Background()
+
+	if rows, err := c.News.StockNewsLatest(ctx, 0); err != nil || len(rows) == 0 {
+		t.Errorf("StockNewsLatest: err=%v len=%d", err, len(rows))
+	}
+	if rows, err := c.News.SearchStockNews(ctx, "AAPL"); err != nil || len(rows) == 0 {
+		t.Errorf("SearchStockNews: err=%v len=%d", err, len(rows))
+	}
+	if rows, err := c.News.FMPArticles(ctx, 0); err != nil || len(rows) == 0 {
+		t.Errorf("FMPArticles: err=%v len=%d", err, len(rows))
+	}
+}
+
 func TestIntegration_Quote(t *testing.T) {
 	if os.Getenv("FMP_API_KEY") == "" {
 		t.Skip("FMP_API_KEY 미설정 — 통합 테스트 skip")
