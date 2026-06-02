@@ -1,6 +1,10 @@
 package quote
 
-import "context"
+import (
+	"context"
+
+	"github.com/kenshin579/fmp-go/internal/fetch"
+)
 
 // AftermarketQuote — 시간외 호가
 type AftermarketQuote struct {
@@ -23,20 +27,20 @@ type AftermarketTrade struct {
 
 // AftermarketQuote 는 종목의 시간외 호가를 조회한다. 결과 없으면 httpclient.ErrNotFound.
 func (c *Client) AftermarketQuote(ctx context.Context, symbol string) (*AftermarketQuote, error) {
-	return fetchOne[AftermarketQuote](ctx, c, "/stable/aftermarket-quote", symbol)
+	return fetch.OneBySymbol[AftermarketQuote](ctx, c.http, "/stable/aftermarket-quote", symbol)
 }
 
 // AftermarketTrade 는 종목의 시간외 체결을 조회한다. 결과 없으면 httpclient.ErrNotFound.
 func (c *Client) AftermarketTrade(ctx context.Context, symbol string) (*AftermarketTrade, error) {
-	return fetchOne[AftermarketTrade](ctx, c, "/stable/aftermarket-trade", symbol)
+	return fetch.OneBySymbol[AftermarketTrade](ctx, c.http, "/stable/aftermarket-trade", symbol)
 }
 
 // BatchAftermarketQuote 는 여러 종목의 시간외 호가를 한 번에 조회한다.
 func (c *Client) BatchAftermarketQuote(ctx context.Context, symbols ...string) ([]AftermarketQuote, error) {
-	return fetchBatch[AftermarketQuote](ctx, c, "/stable/batch-aftermarket-quote", symbols)
+	return fetch.ListBySymbols[AftermarketQuote](ctx, c.http, "/stable/batch-aftermarket-quote", symbols)
 }
 
 // BatchAftermarketTrade 는 여러 종목의 시간외 체결을 한 번에 조회한다.
 func (c *Client) BatchAftermarketTrade(ctx context.Context, symbols ...string) ([]AftermarketTrade, error) {
-	return fetchBatch[AftermarketTrade](ctx, c, "/stable/batch-aftermarket-trade", symbols)
+	return fetch.ListBySymbols[AftermarketTrade](ctx, c.http, "/stable/batch-aftermarket-trade", symbols)
 }

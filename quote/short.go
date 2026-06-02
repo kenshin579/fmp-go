@@ -1,6 +1,10 @@
 package quote
 
-import "context"
+import (
+	"context"
+
+	"github.com/kenshin579/fmp-go/internal/fetch"
+)
 
 // QuoteShort — 경량 시세 (quote-short / batch-quote-short / 자산군 배치 공용)
 type QuoteShort struct {
@@ -12,10 +16,10 @@ type QuoteShort struct {
 
 // QuoteShort 는 종목의 경량 시세를 조회한다. 결과 없으면 httpclient.ErrNotFound.
 func (c *Client) QuoteShort(ctx context.Context, symbol string) (*QuoteShort, error) {
-	return fetchOne[QuoteShort](ctx, c, "/stable/quote-short", symbol)
+	return fetch.OneBySymbol[QuoteShort](ctx, c.http, "/stable/quote-short", symbol)
 }
 
 // BatchQuoteShort 는 여러 종목의 경량 시세를 한 번에 조회한다.
 func (c *Client) BatchQuoteShort(ctx context.Context, symbols ...string) ([]QuoteShort, error) {
-	return fetchBatch[QuoteShort](ctx, c, "/stable/batch-quote-short", symbols)
+	return fetch.ListBySymbols[QuoteShort](ctx, c.http, "/stable/batch-quote-short", symbols)
 }
