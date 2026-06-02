@@ -27,6 +27,7 @@ import (
 	"github.com/kenshin579/fmp-go/ratios"
 	"github.com/kenshin579/fmp-go/reports"
 	"github.com/kenshin579/fmp-go/search"
+	"github.com/kenshin579/fmp-go/secfilings"
 	"github.com/kenshin579/fmp-go/senate"
 	"github.com/kenshin579/fmp-go/statements"
 	"github.com/kenshin579/fmp-go/technicals"
@@ -63,6 +64,7 @@ type Client struct {
 	Fundraisers         *fundraisers.Client   // 크라우드펀딩/지분공모
 	Form13F             *form13f.Client       // 기관 13F 보유/분석
 	ETF                 *etf.Client           // ETF/뮤추얼펀드 보유·정보
+	SECFilings          *secfilings.Client    // SEC 공시 검색/분류/프로필
 }
 
 // NewClient 는 API 키로 Client 를 만든다.
@@ -106,5 +108,6 @@ func NewClient(apiKey string, opts ...Option) (*Client, error) {
 	c.Fundraisers = fundraisers.New(hc)
 	c.Form13F = form13f.New(hc)
 	c.ETF = etf.New(hc)
+	c.SECFilings = secfilings.New(hc)
 	return c, nil
 }

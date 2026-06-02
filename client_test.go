@@ -273,3 +273,13 @@ func TestNewClient_HasETF(t *testing.T) {
 		t.Fatal("ETF sub-client is nil")
 	}
 }
+
+func TestNewClient_HasSECFilings(t *testing.T) {
+	c, err := fmp.NewClient("k")
+	if err != nil {
+		t.Fatalf("NewClient: %v", err)
+	}
+	if c.SECFilings == nil {
+		t.Fatal("SECFilings sub-client is nil")
+	}
+}

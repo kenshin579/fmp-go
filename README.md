@@ -49,6 +49,7 @@ fmt.Println(profile.CompanyName, profile.CEO, profile.Website)
 | Fundraisers | `client.Fundraisers` | LatestCrowdfunding, CrowdfundingByCIK, CrowdfundingSearch, LatestEquityOffering, EquityOfferingByCIK, EquityOfferingSearch — 6 endpoint |
 | Form 13F | `client.Form13F` | LatestFilings, Extract, FilingDates, ExtractAnalyticsByHolder, HolderPerformanceSummary, HoldersIndustryBreakdown, PositionsSummary, IndustrySummary — 8 endpoint |
 | ETF & Mutual Funds | `client.ETF` | Holdings, Information, CountryWeightings, SectorWeightings, AssetExposure, DisclosureHoldersSearch, DisclosureDates, LatestDisclosureHolders, Disclosure — 9 endpoint |
+| SEC Filings | `client.SECFilings` | LatestFinancials, Latest8K, SearchBySymbol, SearchByCIK, SearchByFormType, SearchByName, CompanySearchBySymbol, CompanySearchByCIK, Profile, IndustryClassificationList, IndustryClassificationSearch, AllIndustryClassification — 12 endpoint |
 | Quote | `client.Quote` | Quote, QuoteShort, PriceChange, AftermarketQuote/Trade, Batch(Quote/Short/Aftermarket), 자산군(Exchange/Index/Commodity/Crypto/ETF/Forex/MutualFund) — 16 endpoint |
 | Search | `client.Search` | SearchSymbol, SearchName, SearchCIK, SearchCUSIP, SearchISIN, SearchExchangeVariants, CompanyScreener — 7 endpoint |
 | News | `client.News` | StockNewsLatest, CryptoNewsLatest, ForexNewsLatest, GeneralNewsLatest, PressReleasesLatest, SearchStockNews, SearchCryptoNews, SearchForexNews, SearchPressReleases, FMPArticles — 10 endpoint |
