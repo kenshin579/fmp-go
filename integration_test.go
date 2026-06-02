@@ -176,6 +176,34 @@ func TestIntegration_Analyst(t *testing.T) {
 	}
 }
 
+func TestIntegration_Calendar(t *testing.T) {
+	if os.Getenv("FMP_API_KEY") == "" {
+		t.Skip("FMP_API_KEY 미설정 — skip")
+	}
+	c, err := fmp.NewClientFromEnv()
+	if err != nil {
+		t.Fatal(err)
+	}
+	ctx := context.Background()
+
+	if rows, err := c.Calendar.EarningsCalendar(ctx, "2025-02-01", "2025-02-28"); err != nil || len(rows) == 0 {
+		t.Errorf("EarningsCalendar: err=%v len=%d", err, len(rows))
+	}
+	if rows, err := c.Calendar.CompanyDividends(ctx, "AAPL"); err != nil || len(rows) == 0 {
+		t.Errorf("CompanyDividends: err=%v len=%d", err, len(rows))
+	}
+	if rows, err := c.Calendar.SplitsCalendar(ctx, "2020-08-01", "2020-09-01"); err != nil {
+		t.Errorf("SplitsCalendar: %v", err)
+	} else {
+		t.Logf("SplitsCalendar 건수: %d", len(rows))
+	}
+	if rows, err := c.Calendar.IPOsCalendar(ctx, "2025-02-01", "2025-02-28"); err != nil {
+		t.Errorf("IPOsCalendar: %v", err)
+	} else if len(rows) > 0 {
+		t.Logf("IPO[0]: %+v", rows[0]) // PriceRange 실 타입 확인용 로그
+	}
+}
+
 func TestIntegration_Quote(t *testing.T) {
 	if os.Getenv("FMP_API_KEY") == "" {
 		t.Skip("FMP_API_KEY 미설정 — 통합 테스트 skip")
