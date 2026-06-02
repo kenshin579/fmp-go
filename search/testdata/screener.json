@@ -1,0 +1,16 @@
+[
+  {
+    "symbol": "WIMA", "companyName": "WisdomTree International Adaptive Moving Average Fund",
+    "marketCap": null, "sector": "Financial Services", "industry": "Asset Management",
+    "beta": null, "price": 41.0956, "lastAnnualDividend": null, "volume": 2979,
+    "exchange": "NASDAQ Global Market", "exchangeShortName": "NASDAQ", "country": "US",
+    "isEtf": false, "isFund": true, "isActivelyTrading": true
+  },
+  {
+    "symbol": "AAPL", "companyName": "Apple Inc.",
+    "marketCap": 3900351299800, "sector": "Technology", "industry": "Consumer Electronics",
+    "beta": 1.109, "price": 262.82, "lastAnnualDividend": 1.04, "volume": 47424558,
+    "exchange": "NASDAQ Global Select", "exchangeShortName": "NASDAQ", "country": "US",
+    "isEtf": false, "isFund": false, "isActivelyTrading": true
+  }
+]

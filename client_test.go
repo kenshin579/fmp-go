@@ -63,3 +63,13 @@ func TestNewClient_HasQuote(t *testing.T) {
 		t.Fatal("Quote sub-client is nil")
 	}
 }
+
+func TestNewClient_HasSearch(t *testing.T) {
+	c, err := fmp.NewClient("k")
+	if err != nil {
+		t.Fatalf("NewClient: %v", err)
+	}
+	if c.Search == nil {
+		t.Fatal("Search sub-client is nil")
+	}
+}

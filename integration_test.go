@@ -9,6 +9,7 @@ import (
 
 	fmp "github.com/kenshin579/fmp-go"
 	"github.com/kenshin579/fmp-go/ratios"
+	"github.com/kenshin579/fmp-go/search"
 	"github.com/kenshin579/fmp-go/statements"
 )
 
@@ -107,6 +108,27 @@ func TestIntegration_Company(t *testing.T) {
 	}
 	if rows, err := c.Company.DelistedCompanies(ctx, 0); err != nil || len(rows) == 0 {
 		t.Errorf("DelistedCompanies: err=%v len=%d", err, len(rows))
+	}
+}
+
+func TestIntegration_Search(t *testing.T) {
+	if os.Getenv("FMP_API_KEY") == "" {
+		t.Skip("FMP_API_KEY 미설정 — skip")
+	}
+	c, err := fmp.NewClientFromEnv()
+	if err != nil {
+		t.Fatal(err)
+	}
+	ctx := context.Background()
+
+	if rows, err := c.Search.SearchSymbol(ctx, "AAPL"); err != nil || len(rows) == 0 {
+		t.Errorf("SearchSymbol: err=%v len=%d", err, len(rows))
+	}
+	if rows, err := c.Search.SearchName(ctx, "Apple"); err != nil || len(rows) == 0 {
+		t.Errorf("SearchName: err=%v len=%d", err, len(rows))
+	}
+	if rows, err := c.Search.CompanyScreener(ctx, search.ScreenerParams{Sector: "Technology", Limit: 5}); err != nil || len(rows) == 0 {
+		t.Errorf("CompanyScreener: err=%v len=%d", err, len(rows))
 	}
 }
 
