@@ -1,0 +1,12 @@
+[
+  {
+    "symbol": "AAPL", "date": "2025-09-30",
+    "revenueLow": 400000000000, "revenueHigh": 420000000000, "revenueAvg": 410000000000,
+    "ebitdaLow": 130000000000, "ebitdaHigh": 140000000000, "ebitdaAvg": 135000000000,
+    "ebitLow": 120000000000, "ebitHigh": 128000000000, "ebitAvg": 124000000000,
+    "netIncomeLow": 95000000000, "netIncomeHigh": 105000000000, "netIncomeAvg": 100000000000,
+    "sgaExpenseLow": 25000000000, "sgaExpenseHigh": 27000000000, "sgaExpenseAvg": 26000000000,
+    "epsLow": 6.5, "epsHigh": 7.1, "epsAvg": 6.8,
+    "numAnalystsRevenue": 14, "numAnalystsEps": 16
+  }
+]
