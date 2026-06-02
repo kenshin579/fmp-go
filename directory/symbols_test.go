@@ -52,6 +52,22 @@ func TestCompanySymbolsList_Parse(t *testing.T) {
 	}
 }
 
+func TestFinancialSymbolsList_Parse(t *testing.T) {
+	raw, _ := os.ReadFile("testdata/financial-statement-symbol-list.json")
+	c, cap, cleanup := newCapturingClient(t, string(raw))
+	defer cleanup()
+	rows, err := c.FinancialSymbolsList(context.Background())
+	if err != nil || len(rows) != 1 {
+		t.Fatalf("err=%v len=%d", err, len(rows))
+	}
+	if rows[0].Symbol != "AAPL" || rows[0].TradingCurrency == "" || rows[0].ReportingCurrency == "" {
+		t.Errorf("not parsed: %+v", rows[0])
+	}
+	if cap.path != "/stable/financial-statement-symbol-list" {
+		t.Errorf("path=%q", cap.path)
+	}
+}
+
 func TestCompanySymbolsList_Delegation(t *testing.T) {
 	raw, _ := os.ReadFile("testdata/stock-list.json")
 	c, cap, cleanup := newCapturingClient(t, string(raw))
