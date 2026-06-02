@@ -1,0 +1,4 @@
+[
+	{ "symbol": "BTCUSD", "name": "Bitcoin", "exchange": "CRYPTO", "icoDate": "2009-01-03", "circulatingSupply": 19600000, "totalSupply": 21000000 },
+	{ "symbol": "ETHUSD", "name": "Ethereum", "exchange": "CRYPTO", "icoDate": "2015-07-30", "circulatingSupply": 120000000, "totalSupply": null }
+]
