@@ -183,3 +183,13 @@ func TestNewClient_HasInsiderTrades(t *testing.T) {
 		t.Fatal("InsiderTrades sub-client is nil")
 	}
 }
+
+func TestNewClient_HasTechnicalIndicators(t *testing.T) {
+	c, err := fmp.NewClient("k")
+	if err != nil {
+		t.Fatalf("NewClient: %v", err)
+	}
+	if c.TechnicalIndicators == nil {
+		t.Fatal("TechnicalIndicators sub-client is nil")
+	}
+}

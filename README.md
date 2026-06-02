@@ -40,6 +40,7 @@ fmt.Println(profile.CompanyName, profile.CEO, profile.Website)
 | Economics | `client.Economics` | TreasuryRates, EconomicIndicators, EconomicCalendar, MarketRiskPremium — 4 endpoint |
 | Market Hours | `client.MarketHours` | ExchangeMarketHours, AllExchangeMarketHours, HolidaysByExchange — 3 endpoint |
 | Insider Trades | `client.InsiderTrades` | LatestInsiderTrades, SearchInsiderTrades, TransactionTypes, Statistics, AcquisitionOwnership, SearchReportingName — 6 endpoint |
+| Technical Indicators | `client.TechnicalIndicators` | SMA, EMA, WMA, DEMA, TEMA, RSI, StandardDeviation, Williams, ADX — 9 endpoint |
 | Quote | `client.Quote` | Quote, QuoteShort, PriceChange, AftermarketQuote/Trade, Batch(Quote/Short/Aftermarket), 자산군(Exchange/Index/Commodity/Crypto/ETF/Forex/MutualFund) — 16 endpoint |
 | Search | `client.Search` | SearchSymbol, SearchName, SearchCIK, SearchCUSIP, SearchISIN, SearchExchangeVariants, CompanyScreener — 7 endpoint |
 | News | `client.News` | StockNewsLatest, CryptoNewsLatest, ForexNewsLatest, GeneralNewsLatest, PressReleasesLatest, SearchStockNews, SearchCryptoNews, SearchForexNews, SearchPressReleases, FMPArticles — 10 endpoint |
