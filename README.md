@@ -43,6 +43,7 @@ fmt.Println(profile.CompanyName, profile.CEO, profile.Website)
 | Technical Indicators | `client.TechnicalIndicators` | SMA, EMA, WMA, DEMA, TEMA, RSI, StandardDeviation, Williams, ADX — 9 endpoint |
 | DCF | `client.DCF` | DiscountedCashFlow, LeveredDiscountedCashFlow, CustomDiscountedCashFlow, CustomLeveredDiscountedCashFlow — 4 endpoint |
 | Senate/House | `client.Senate` | SenateLatest, SenateTrades, SenateTradesByName, HouseLatest, HouseTrades, HouseTradesByName — 6 endpoint |
+| ESG | `client.ESG` | Ratings, Disclosures, Benchmark — 3 endpoint |
 | Quote | `client.Quote` | Quote, QuoteShort, PriceChange, AftermarketQuote/Trade, Batch(Quote/Short/Aftermarket), 자산군(Exchange/Index/Commodity/Crypto/ETF/Forex/MutualFund) — 16 endpoint |
 | Search | `client.Search` | SearchSymbol, SearchName, SearchCIK, SearchCUSIP, SearchISIN, SearchExchangeVariants, CompanyScreener — 7 endpoint |
 | News | `client.News` | StockNewsLatest, CryptoNewsLatest, ForexNewsLatest, GeneralNewsLatest, PressReleasesLatest, SearchStockNews, SearchCryptoNews, SearchForexNews, SearchPressReleases, FMPArticles — 10 endpoint |
