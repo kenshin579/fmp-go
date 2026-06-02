@@ -22,6 +22,7 @@ import (
 	"github.com/kenshin579/fmp-go/reports"
 	"github.com/kenshin579/fmp-go/search"
 	"github.com/kenshin579/fmp-go/statements"
+	"github.com/kenshin579/fmp-go/technicals"
 )
 
 // Client 는 fmp-go 라이브러리의 단일 진입점.
@@ -40,11 +41,12 @@ type Client struct {
 	Reports    *reports.Client    // 보고서(as-reported/latest/dates/10-K JSON)
 	Chart      *chart.Client      // 과거 시세(EOD/intraday)
 
-	MarketPerformance *marketperf.Client    // 시장 성과(등락/섹터/산업/PE)
-	Directory         *directory.Client     // 목록(심볼/거래소/섹터/산업/국가)
-	Economics         *economics.Client     // 경제(국채/지표/캘린더/리스크프리미엄)
-	MarketHours       *markethours.Client   // 거래소 운영시간/휴장일
-	InsiderTrades     *insidertrades.Client // 내부자 거래
+	MarketPerformance   *marketperf.Client    // 시장 성과(등락/섹터/산업/PE)
+	Directory           *directory.Client     // 목록(심볼/거래소/섹터/산업/국가)
+	Economics           *economics.Client     // 경제(국채/지표/캘린더/리스크프리미엄)
+	MarketHours         *markethours.Client   // 거래소 운영시간/휴장일
+	InsiderTrades       *insidertrades.Client // 내부자 거래
+	TechnicalIndicators *technicals.Client    // 기술 지표(SMA/EMA/RSI/ADX 등)
 }
 
 // NewClient 는 API 키로 Client 를 만든다.
@@ -79,5 +81,6 @@ func NewClient(apiKey string, opts ...Option) (*Client, error) {
 	c.Economics = economics.New(hc)
 	c.MarketHours = markethours.New(hc)
 	c.InsiderTrades = insidertrades.New(hc)
+	c.TechnicalIndicators = technicals.New(hc)
 	return c, nil
 }
