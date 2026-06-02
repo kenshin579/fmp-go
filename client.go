@@ -9,6 +9,7 @@ import (
 	"github.com/kenshin579/fmp-go/calendar"
 	"github.com/kenshin579/fmp-go/chart"
 	"github.com/kenshin579/fmp-go/company"
+	"github.com/kenshin579/fmp-go/cot"
 	"github.com/kenshin579/fmp-go/dcf"
 	"github.com/kenshin579/fmp-go/directory"
 	"github.com/kenshin579/fmp-go/economics"
@@ -55,6 +56,7 @@ type Client struct {
 	Senate              *senate.Client        // 의회(상원/하원) 거래 공시
 	ESG                 *esg.Client           // ESG 평가/공시/벤치마크
 	EarningsTranscripts *transcripts.Client   // 실적 발표 트랜스크립트
+	COT                 *cot.Client           // 상품선물 COT 리포트
 }
 
 // NewClient 는 API 키로 Client 를 만든다.
@@ -94,5 +96,6 @@ func NewClient(apiKey string, opts ...Option) (*Client, error) {
 	c.Senate = senate.New(hc)
 	c.ESG = esg.New(hc)
 	c.EarningsTranscripts = transcripts.New(hc)
+	c.COT = cot.New(hc)
 	return c, nil
 }

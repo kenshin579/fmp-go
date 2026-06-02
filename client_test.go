@@ -233,3 +233,13 @@ func TestNewClient_HasEarningsTranscripts(t *testing.T) {
 		t.Fatal("EarningsTranscripts sub-client is nil")
 	}
 }
+
+func TestNewClient_HasCOT(t *testing.T) {
+	c, err := fmp.NewClient("k")
+	if err != nil {
+		t.Fatalf("NewClient: %v", err)
+	}
+	if c.COT == nil {
+		t.Fatal("COT sub-client is nil")
+	}
+}
