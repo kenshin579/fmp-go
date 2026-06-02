@@ -193,3 +193,13 @@ func TestNewClient_HasTechnicalIndicators(t *testing.T) {
 		t.Fatal("TechnicalIndicators sub-client is nil")
 	}
 }
+
+func TestNewClient_HasDCF(t *testing.T) {
+	c, err := fmp.NewClient("k")
+	if err != nil {
+		t.Fatalf("NewClient: %v", err)
+	}
+	if c.DCF == nil {
+		t.Fatal("DCF sub-client is nil")
+	}
+}

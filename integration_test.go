@@ -9,6 +9,7 @@ import (
 	"time"
 
 	fmp "github.com/kenshin579/fmp-go"
+	"github.com/kenshin579/fmp-go/dcf"
 	"github.com/kenshin579/fmp-go/insidertrades"
 	"github.com/kenshin579/fmp-go/ratios"
 	"github.com/kenshin579/fmp-go/search"
@@ -203,6 +204,27 @@ func TestIntegration_Calendar(t *testing.T) {
 		t.Errorf("IPOsCalendar: %v", err)
 	} else if len(rows) > 0 {
 		t.Logf("IPO[0]: %+v", rows[0]) // PriceRange 실 타입 확인용 로그
+	}
+}
+
+func TestIntegration_DCF(t *testing.T) {
+	if os.Getenv("FMP_API_KEY") == "" {
+		t.Skip("FMP_API_KEY 미설정 — skip")
+	}
+	c, err := fmp.NewClientFromEnv()
+	if err != nil {
+		t.Fatal(err)
+	}
+	ctx := context.Background()
+
+	if rows, err := c.DCF.DiscountedCashFlow(ctx, "AAPL"); err != nil || len(rows) == 0 || rows[0].DCF <= 0 {
+		t.Errorf("DiscountedCashFlow: err=%v len=%d", err, len(rows))
+	}
+	if rows, err := c.DCF.CustomDiscountedCashFlow(ctx, dcf.CustomDCFParams{Symbol: "AAPL"}); err != nil || len(rows) == 0 {
+		t.Errorf("CustomDiscountedCashFlow: err=%v len=%d", err, len(rows))
+	}
+	if rows, err := c.DCF.CustomLeveredDiscountedCashFlow(ctx, dcf.CustomDCFParams{Symbol: "AAPL"}); err != nil || len(rows) == 0 {
+		t.Errorf("CustomLeveredDiscountedCashFlow: err=%v len=%d", err, len(rows))
 	}
 }
 
