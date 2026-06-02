@@ -81,6 +81,35 @@ func TestIntegration_BalanceSheetStatement(t *testing.T) {
 	}
 }
 
+func TestIntegration_Company(t *testing.T) {
+	if os.Getenv("FMP_API_KEY") == "" {
+		t.Skip("FMP_API_KEY 미설정 — skip")
+	}
+	c, err := fmp.NewClientFromEnv()
+	if err != nil {
+		t.Fatal(err)
+	}
+	ctx := context.Background()
+
+	if mc, err := c.Company.MarketCap(ctx, "AAPL"); err != nil || mc.MarketCap <= 0 {
+		t.Errorf("MarketCap: err=%v mc=%+v", err, mc)
+	}
+	if rows, err := c.Company.StockPeers(ctx, "AAPL"); err != nil || len(rows) == 0 {
+		t.Errorf("StockPeers: err=%v len=%d", err, len(rows))
+	}
+	if rows, err := c.Company.KeyExecutives(ctx, "AAPL"); err != nil || len(rows) == 0 {
+		t.Errorf("KeyExecutives: err=%v len=%d", err, len(rows))
+	}
+	if sf, err := c.Company.SharesFloat(ctx, "AAPL"); err != nil {
+		t.Errorf("SharesFloat: %v", err)
+	} else {
+		t.Logf("SharesFloat AAPL: %+v", sf) // 합성 struct 실 shape 확인용 로그
+	}
+	if rows, err := c.Company.DelistedCompanies(ctx, 0); err != nil || len(rows) == 0 {
+		t.Errorf("DelistedCompanies: err=%v len=%d", err, len(rows))
+	}
+}
+
 func TestIntegration_Quote(t *testing.T) {
 	if os.Getenv("FMP_API_KEY") == "" {
 		t.Skip("FMP_API_KEY 미설정 — 통합 테스트 skip")
