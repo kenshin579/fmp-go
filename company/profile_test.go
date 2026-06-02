@@ -5,22 +5,11 @@ import (
 	"encoding/json"
 	"errors"
 	"net/http"
-	"net/http/httptest"
 	"os"
 	"testing"
 
 	"github.com/kenshin579/fmp-go/internal/httpclient"
 )
-
-func newTestClient(t *testing.T, status int, body string) (*Client, func()) {
-	t.Helper()
-	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.WriteHeader(status)
-		_, _ = w.Write([]byte(body))
-	}))
-	c := New(httpclient.New(httpclient.Config{APIKey: "k", BaseURL: srv.URL}))
-	return c, srv.Close
-}
 
 func TestProfile_ParsesFixture(t *testing.T) {
 	raw, err := os.ReadFile("testdata/profile_aapl.json")

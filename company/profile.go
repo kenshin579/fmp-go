@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/kenshin579/fmp-go/internal/fetch"
 	"github.com/kenshin579/fmp-go/internal/httpclient"
 )
 
@@ -61,4 +62,12 @@ func (c *Client) Profile(ctx context.Context, symbol string) (*Profile, error) {
 		return nil, httpclient.ErrNotFound
 	}
 	return &out[0], nil
+}
+
+// ProfileByCIK 는 CIK 로 회사 프로필을 조회한다. 결과 없으면 httpclient.ErrNotFound.
+func (c *Client) ProfileByCIK(ctx context.Context, cik string) (*Profile, error) {
+	if strings.TrimSpace(cik) == "" {
+		return nil, fmt.Errorf("fmp: cik must not be empty")
+	}
+	return fetch.One[Profile](ctx, c.http, "/stable/profile-cik", map[string]string{"cik": cik})
 }
