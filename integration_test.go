@@ -6,6 +6,7 @@ import (
 	"context"
 	"os"
 	"testing"
+	"time"
 
 	fmp "github.com/kenshin579/fmp-go"
 	"github.com/kenshin579/fmp-go/ratios"
@@ -201,6 +202,28 @@ func TestIntegration_Calendar(t *testing.T) {
 		t.Errorf("IPOsCalendar: %v", err)
 	} else if len(rows) > 0 {
 		t.Logf("IPO[0]: %+v", rows[0]) // PriceRange 실 타입 확인용 로그
+	}
+}
+
+func TestIntegration_MarketPerformance(t *testing.T) {
+	if os.Getenv("FMP_API_KEY") == "" {
+		t.Skip("FMP_API_KEY 미설정 — skip")
+	}
+	c, err := fmp.NewClientFromEnv()
+	if err != nil {
+		t.Fatal(err)
+	}
+	ctx := context.Background()
+	date := time.Now().Format("2006-01-02")
+
+	if rows, err := c.MarketPerformance.BiggestGainers(ctx); err != nil || len(rows) == 0 {
+		t.Errorf("BiggestGainers: err=%v len=%d", err, len(rows))
+	}
+	if _, err := c.MarketPerformance.SectorPerformanceSnapshot(ctx, date, "", ""); err != nil {
+		t.Errorf("SectorPerformanceSnapshot: %v", err) // 주말/휴일 빈 결과 허용
+	}
+	if _, err := c.MarketPerformance.SectorPESnapshot(ctx, date, "", ""); err != nil {
+		t.Errorf("SectorPESnapshot: %v", err)
 	}
 }
 
