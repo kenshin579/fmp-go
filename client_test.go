@@ -203,3 +203,13 @@ func TestNewClient_HasDCF(t *testing.T) {
 		t.Fatal("DCF sub-client is nil")
 	}
 }
+
+func TestNewClient_HasSenate(t *testing.T) {
+	c, err := fmp.NewClient("k")
+	if err != nil {
+		t.Fatalf("NewClient: %v", err)
+	}
+	if c.Senate == nil {
+		t.Fatal("Senate sub-client is nil")
+	}
+}

@@ -207,6 +207,27 @@ func TestIntegration_Calendar(t *testing.T) {
 	}
 }
 
+func TestIntegration_Senate(t *testing.T) {
+	if os.Getenv("FMP_API_KEY") == "" {
+		t.Skip("FMP_API_KEY 미설정 — skip")
+	}
+	c, err := fmp.NewClientFromEnv()
+	if err != nil {
+		t.Fatal(err)
+	}
+	ctx := context.Background()
+
+	if rows, err := c.Senate.SenateLatest(ctx, 0, 10); err != nil || len(rows) == 0 {
+		t.Errorf("SenateLatest: err=%v len=%d", err, len(rows))
+	}
+	if rows, err := c.Senate.HouseLatest(ctx, 0, 10); err != nil || len(rows) == 0 {
+		t.Errorf("HouseLatest: err=%v len=%d", err, len(rows))
+	}
+	if _, err := c.Senate.SenateTrades(ctx, "AAPL", 0, 5); err != nil {
+		t.Errorf("SenateTrades: %v", err)
+	}
+}
+
 func TestIntegration_DCF(t *testing.T) {
 	if os.Getenv("FMP_API_KEY") == "" {
 		t.Skip("FMP_API_KEY 미설정 — skip")
