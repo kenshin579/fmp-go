@@ -35,6 +35,7 @@ fmt.Println(profile.CompanyName, profile.CEO, profile.Website)
 | Quote | `client.Quote` | Quote, QuoteShort, PriceChange, AftermarketQuote/Trade, Batch(Quote/Short/Aftermarket), 자산군(Exchange/Index/Commodity/Crypto/ETF/Forex/MutualFund) — 16 endpoint |
 | Search | `client.Search` | SearchSymbol, SearchName, SearchCIK, SearchCUSIP, SearchISIN, SearchExchangeVariants, CompanyScreener — 7 endpoint |
 | News | `client.News` | StockNewsLatest, CryptoNewsLatest, ForexNewsLatest, GeneralNewsLatest, PressReleasesLatest, SearchStockNews, SearchCryptoNews, SearchForexNews, SearchPressReleases, FMPArticles — 10 endpoint |
+| Calendar | `client.Calendar` | DividendsCalendar, CompanyDividends, EarningsCalendar, CompanyEarnings, IPOsCalendar, IPODisclosures, IPOProspectuses, SplitsCalendar, CompanySplits — 9 endpoint |
 
 > 전체 FMP API 커버리지를 목표로 카테고리 단위로 점진 확장한다.
 > 전체 API 문서 카탈로그: `docs/api/`.

@@ -93,3 +93,13 @@ func TestNewClient_HasAnalyst(t *testing.T) {
 		t.Fatal("Analyst sub-client is nil")
 	}
 }
+
+func TestNewClient_HasCalendar(t *testing.T) {
+	c, err := fmp.NewClient("k")
+	if err != nil {
+		t.Fatalf("NewClient: %v", err)
+	}
+	if c.Calendar == nil {
+		t.Fatal("Calendar sub-client is nil")
+	}
+}
