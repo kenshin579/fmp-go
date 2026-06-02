@@ -2,7 +2,6 @@ package news
 
 import (
 	"context"
-	"strconv"
 
 	"github.com/kenshin579/fmp-go/internal/fetch"
 )
@@ -21,5 +20,5 @@ type FMPArticle struct {
 
 // FMPArticles 는 FMP 자체 작성 기사를 페이지 단위로 조회한다.
 func (c *Client) FMPArticles(ctx context.Context, page int) ([]FMPArticle, error) {
-	return fetch.List[FMPArticle](ctx, c.http, "/stable/fmp-articles", map[string]string{"page": strconv.Itoa(page)})
+	return fetch.List[FMPArticle](ctx, c.http, "/stable/fmp-articles", pageParams(page))
 }
