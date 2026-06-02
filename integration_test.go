@@ -207,6 +207,29 @@ func TestIntegration_Calendar(t *testing.T) {
 	}
 }
 
+func TestIntegration_SECFilings(t *testing.T) {
+	if os.Getenv("FMP_API_KEY") == "" {
+		t.Skip("FMP_API_KEY 미설정 — skip")
+	}
+	c, err := fmp.NewClientFromEnv()
+	if err != nil {
+		t.Fatal(err)
+	}
+	ctx := context.Background()
+
+	if rows, err := c.SECFilings.Profile(ctx, "AAPL", ""); err != nil || len(rows) == 0 {
+		t.Errorf("Profile: err=%v len=%d", err, len(rows))
+	}
+	if rows, err := c.SECFilings.IndustryClassificationList(ctx, "", ""); err != nil || len(rows) == 0 {
+		t.Errorf("IndustryClassificationList: err=%v len=%d", err, len(rows))
+	}
+	to := time.Now().Format("2006-01-02")
+	from := time.Now().AddDate(0, 0, -7).Format("2006-01-02")
+	if _, err := c.SECFilings.SearchBySymbol(ctx, "AAPL", from, to, 0, 5); err != nil {
+		t.Errorf("SearchBySymbol: %v", err)
+	}
+}
+
 func TestIntegration_ETF(t *testing.T) {
 	if os.Getenv("FMP_API_KEY") == "" {
 		t.Skip("FMP_API_KEY 미설정 — skip")
