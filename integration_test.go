@@ -153,6 +153,29 @@ func TestIntegration_News(t *testing.T) {
 	}
 }
 
+func TestIntegration_Analyst(t *testing.T) {
+	if os.Getenv("FMP_API_KEY") == "" {
+		t.Skip("FMP_API_KEY 미설정 — skip")
+	}
+	c, err := fmp.NewClientFromEnv()
+	if err != nil {
+		t.Fatal(err)
+	}
+	ctx := context.Background()
+
+	if g, err := c.Analyst.GradesConsensus(ctx, "AAPL"); err != nil || g.Symbol != "AAPL" {
+		t.Errorf("GradesConsensus: err=%v g=%+v", err, g)
+	}
+	if pt, err := c.Analyst.PriceTargetConsensus(ctx, "AAPL"); err != nil || pt.TargetConsensus <= 0 {
+		t.Errorf("PriceTargetConsensus: err=%v pt=%+v", err, pt)
+	}
+	if rows, err := c.Analyst.FinancialEstimates(ctx, "AAPL", "annual", 0); err != nil || len(rows) == 0 {
+		t.Errorf("FinancialEstimates: err=%v len=%d", err, len(rows))
+	} else {
+		t.Logf("FinancialEstimate[0]: %+v", rows[0])
+	}
+}
+
 func TestIntegration_Quote(t *testing.T) {
 	if os.Getenv("FMP_API_KEY") == "" {
 		t.Skip("FMP_API_KEY 미설정 — 통합 테스트 skip")

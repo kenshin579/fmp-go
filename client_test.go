@@ -83,3 +83,13 @@ func TestNewClient_HasNews(t *testing.T) {
 		t.Fatal("News sub-client is nil")
 	}
 }
+
+func TestNewClient_HasAnalyst(t *testing.T) {
+	c, err := fmp.NewClient("k")
+	if err != nil {
+		t.Fatalf("NewClient: %v", err)
+	}
+	if c.Analyst == nil {
+		t.Fatal("Analyst sub-client is nil")
+	}
+}
