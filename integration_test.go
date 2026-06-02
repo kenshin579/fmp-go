@@ -205,6 +205,27 @@ func TestIntegration_Calendar(t *testing.T) {
 	}
 }
 
+func TestIntegration_Directory(t *testing.T) {
+	if os.Getenv("FMP_API_KEY") == "" {
+		t.Skip("FMP_API_KEY 미설정 — skip")
+	}
+	c, err := fmp.NewClientFromEnv()
+	if err != nil {
+		t.Fatal(err)
+	}
+	ctx := context.Background()
+
+	if rows, err := c.Directory.CompanySymbolsList(ctx); err != nil || len(rows) == 0 {
+		t.Errorf("CompanySymbolsList: err=%v len=%d", err, len(rows))
+	}
+	if rows, err := c.Directory.AvailableExchanges(ctx); err != nil || len(rows) == 0 || rows[0].Exchange == "" {
+		t.Errorf("AvailableExchanges: err=%v len=%d", err, len(rows))
+	}
+	if rows, err := c.Directory.AvailableSectors(ctx); err != nil || len(rows) == 0 {
+		t.Errorf("AvailableSectors: err=%v len=%d", err, len(rows))
+	}
+}
+
 func TestIntegration_MarketPerformance(t *testing.T) {
 	if os.Getenv("FMP_API_KEY") == "" {
 		t.Skip("FMP_API_KEY 미설정 — skip")

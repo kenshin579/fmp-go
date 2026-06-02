@@ -143,3 +143,13 @@ func TestNewClient_HasMarketPerformance(t *testing.T) {
 		t.Fatal("MarketPerformance sub-client is nil")
 	}
 }
+
+func TestNewClient_HasDirectory(t *testing.T) {
+	c, err := fmp.NewClient("k")
+	if err != nil {
+		t.Fatalf("NewClient: %v", err)
+	}
+	if c.Directory == nil {
+		t.Fatal("Directory sub-client is nil")
+	}
+}
