@@ -207,6 +207,30 @@ func TestIntegration_Calendar(t *testing.T) {
 	}
 }
 
+func TestIntegration_ETF(t *testing.T) {
+	if os.Getenv("FMP_API_KEY") == "" {
+		t.Skip("FMP_API_KEY 미설정 — skip")
+	}
+	c, err := fmp.NewClientFromEnv()
+	if err != nil {
+		t.Fatal(err)
+	}
+	ctx := context.Background()
+
+	if rows, err := c.ETF.Holdings(ctx, "SPY"); err != nil || len(rows) == 0 {
+		t.Errorf("Holdings: err=%v len=%d", err, len(rows))
+	}
+	if rows, err := c.ETF.Information(ctx, "SPY"); err != nil || len(rows) == 0 {
+		t.Errorf("Information: err=%v len=%d", err, len(rows))
+	}
+	if rows, err := c.ETF.SectorWeightings(ctx, "SPY"); err != nil || len(rows) == 0 {
+		t.Errorf("SectorWeightings: err=%v len=%d", err, len(rows))
+	}
+	if _, err := c.ETF.Disclosure(ctx, "VFIAX", "2023", "4", ""); err != nil {
+		t.Errorf("Disclosure: %v", err)
+	}
+}
+
 func TestIntegration_Form13F(t *testing.T) {
 	if os.Getenv("FMP_API_KEY") == "" {
 		t.Skip("FMP_API_KEY 미설정 — skip")

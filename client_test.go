@@ -263,3 +263,13 @@ func TestNewClient_HasForm13F(t *testing.T) {
 		t.Fatal("Form13F sub-client is nil")
 	}
 }
+
+func TestNewClient_HasETF(t *testing.T) {
+	c, err := fmp.NewClient("k")
+	if err != nil {
+		t.Fatalf("NewClient: %v", err)
+	}
+	if c.ETF == nil {
+		t.Fatal("ETF sub-client is nil")
+	}
+}
