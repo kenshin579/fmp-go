@@ -1,0 +1,4 @@
+[
+  { "exchange": "NASDAQ", "name": "NASDAQ Global Market", "openingHour": "09:30 AM -04:00", "closingHour": "04:00 PM -04:00", "timezone": "America/New_York", "isMarketOpen": true },
+  { "exchange": "NYSE", "name": "New York Stock Exchange", "openingHour": "09:30 AM -04:00", "closingHour": "04:00 PM -04:00", "timezone": "America/New_York", "isMarketOpen": false }
+]
