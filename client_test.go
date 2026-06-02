@@ -173,3 +173,13 @@ func TestNewClient_HasMarketHours(t *testing.T) {
 		t.Fatal("MarketHours sub-client is nil")
 	}
 }
+
+func TestNewClient_HasInsiderTrades(t *testing.T) {
+	c, err := fmp.NewClient("k")
+	if err != nil {
+		t.Fatalf("NewClient: %v", err)
+	}
+	if c.InsiderTrades == nil {
+		t.Fatal("InsiderTrades sub-client is nil")
+	}
+}
