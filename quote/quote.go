@@ -1,6 +1,10 @@
 package quote
 
-import "context"
+import (
+	"context"
+
+	"github.com/kenshin579/fmp-go/internal/fetch"
+)
 
 // Quote — 전체 시세 (quote / batch-quote / exchange-quote 공용)
 type Quote struct {
@@ -25,10 +29,10 @@ type Quote struct {
 
 // Quote 는 종목의 전체 시세를 조회한다. 결과 없으면 httpclient.ErrNotFound.
 func (c *Client) Quote(ctx context.Context, symbol string) (*Quote, error) {
-	return fetchOne[Quote](ctx, c, "/stable/quote", symbol)
+	return fetch.OneBySymbol[Quote](ctx, c.http, "/stable/quote", symbol)
 }
 
 // BatchQuote 는 여러 종목의 전체 시세를 한 번에 조회한다.
 func (c *Client) BatchQuote(ctx context.Context, symbols ...string) ([]Quote, error) {
-	return fetchBatch[Quote](ctx, c, "/stable/batch-quote", symbols)
+	return fetch.ListBySymbols[Quote](ctx, c.http, "/stable/batch-quote", symbols)
 }

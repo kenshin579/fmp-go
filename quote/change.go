@@ -1,6 +1,10 @@
 package quote
 
-import "context"
+import (
+	"context"
+
+	"github.com/kenshin579/fmp-go/internal/fetch"
+)
 
 // PriceChange — 기간별 등락률(%) — stock-price-change
 type PriceChange struct {
@@ -20,5 +24,5 @@ type PriceChange struct {
 
 // PriceChange 는 종목의 기간별 등락률을 조회한다. 결과 없으면 httpclient.ErrNotFound.
 func (c *Client) PriceChange(ctx context.Context, symbol string) (*PriceChange, error) {
-	return fetchOne[PriceChange](ctx, c, "/stable/stock-price-change", symbol)
+	return fetch.OneBySymbol[PriceChange](ctx, c.http, "/stable/stock-price-change", symbol)
 }

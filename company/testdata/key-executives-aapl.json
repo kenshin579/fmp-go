@@ -1,0 +1,4 @@
+[
+  { "title": "Chief Executive Officer", "name": "Tim Cook", "pay": 16520856, "currencyPay": "USD", "gender": "male", "yearBorn": 1960, "titleSince": 1378944000, "active": true },
+  { "title": "Senior Vice President of Worldwide Marketing", "name": "Greg Joswiak", "pay": null, "currencyPay": "USD", "gender": "male", "yearBorn": null, "titleSince": null, "active": true }
+]

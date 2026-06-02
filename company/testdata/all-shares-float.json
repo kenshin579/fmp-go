@@ -1,0 +1,4 @@
+[
+  { "symbol": "AAPL", "date": "2025-10-24", "freeFloat": 99.92, "floatShares": 14800000000, "outstandingShares": 14840000000 },
+  { "symbol": "MSFT", "date": "2025-10-24", "freeFloat": 99.7, "floatShares": 7400000000, "outstandingShares": 7430000000 }
+]
