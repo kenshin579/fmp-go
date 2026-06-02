@@ -1,0 +1,4 @@
+[
+  { "symbol": "AAPL", "date": "2025-02-01", "analystRatingsBuy": 8, "analystRatingsHold": 14, "analystRatingsSell": 2, "analystRatingsStrongSell": 2 },
+  { "symbol": "AAPL", "date": "2025-01-01", "analystRatingsBuy": 7, "analystRatingsHold": 15, "analystRatingsSell": 3, "analystRatingsStrongSell": 1 }
+]
