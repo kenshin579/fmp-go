@@ -22,6 +22,7 @@ import (
 	"github.com/kenshin579/fmp-go/ratios"
 	"github.com/kenshin579/fmp-go/reports"
 	"github.com/kenshin579/fmp-go/search"
+	"github.com/kenshin579/fmp-go/senate"
 	"github.com/kenshin579/fmp-go/statements"
 	"github.com/kenshin579/fmp-go/technicals"
 )
@@ -49,6 +50,7 @@ type Client struct {
 	InsiderTrades       *insidertrades.Client // 내부자 거래
 	TechnicalIndicators *technicals.Client    // 기술 지표(SMA/EMA/RSI/ADX 등)
 	DCF                 *dcf.Client           // DCF 밸류에이션
+	Senate              *senate.Client        // 의회(상원/하원) 거래 공시
 }
 
 // NewClient 는 API 키로 Client 를 만든다.
@@ -85,5 +87,6 @@ func NewClient(apiKey string, opts ...Option) (*Client, error) {
 	c.InsiderTrades = insidertrades.New(hc)
 	c.TechnicalIndicators = technicals.New(hc)
 	c.DCF = dcf.New(hc)
+	c.Senate = senate.New(hc)
 	return c, nil
 }
