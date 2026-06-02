@@ -9,6 +9,7 @@ import (
 	"time"
 
 	fmp "github.com/kenshin579/fmp-go"
+	"github.com/kenshin579/fmp-go/insidertrades"
 	"github.com/kenshin579/fmp-go/ratios"
 	"github.com/kenshin579/fmp-go/search"
 	"github.com/kenshin579/fmp-go/statements"
@@ -202,6 +203,30 @@ func TestIntegration_Calendar(t *testing.T) {
 		t.Errorf("IPOsCalendar: %v", err)
 	} else if len(rows) > 0 {
 		t.Logf("IPO[0]: %+v", rows[0]) // PriceRange 실 타입 확인용 로그
+	}
+}
+
+func TestIntegration_InsiderTrades(t *testing.T) {
+	if os.Getenv("FMP_API_KEY") == "" {
+		t.Skip("FMP_API_KEY 미설정 — skip")
+	}
+	c, err := fmp.NewClientFromEnv()
+	if err != nil {
+		t.Fatal(err)
+	}
+	ctx := context.Background()
+
+	if rows, err := c.InsiderTrades.LatestInsiderTrades(ctx, "", 0, 5); err != nil || len(rows) == 0 {
+		t.Errorf("LatestInsiderTrades: err=%v len=%d", err, len(rows))
+	}
+	if _, err := c.InsiderTrades.SearchInsiderTrades(ctx, insidertrades.SearchParams{Symbol: "AAPL", Limit: 5}); err != nil {
+		t.Errorf("SearchInsiderTrades: %v", err)
+	}
+	if _, err := c.InsiderTrades.Statistics(ctx, "AAPL"); err != nil {
+		t.Errorf("Statistics: %v", err)
+	}
+	if rows, err := c.InsiderTrades.TransactionTypes(ctx); err != nil || len(rows) == 0 {
+		t.Errorf("TransactionTypes: err=%v len=%d", err, len(rows))
 	}
 }
 
