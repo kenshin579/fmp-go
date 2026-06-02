@@ -28,6 +28,7 @@ fmt.Println(profile.CompanyName, profile.CEO, profile.Website)
 
 | 카테고리 | 서비스 | 엔드포인트 |
 |----------|--------|-----------|
+| Analyst | `client.Analyst` | Grades, GradesConsensus, HistoricalGrades, RatingsSnapshot, HistoricalRatings, PriceTargetConsensus, PriceTargetSummary, FinancialEstimates — 8 endpoint |
 | Company | `client.Company` | Profile, ProfileByCIK, MarketCap(+historical/batch), SharesFloat(+all), EmployeeCount(+historical), KeyExecutives, ExecutiveCompensation(+benchmark), StockPeers, CompanyNotes, Mergers(latest/search), DelistedCompanies — 17 endpoint |
 | Statements | `client.Statements` | IncomeStatement, BalanceSheetStatement |
 | Ratios | `client.Ratios` | Ratios |

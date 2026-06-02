@@ -5,6 +5,7 @@ import (
 	"errors"
 	"time"
 
+	"github.com/kenshin579/fmp-go/analyst"
 	"github.com/kenshin579/fmp-go/company"
 	"github.com/kenshin579/fmp-go/internal/httpclient"
 	"github.com/kenshin579/fmp-go/news"
@@ -18,6 +19,7 @@ import (
 type Client struct {
 	http *httpclient.Client
 
+	Analyst    *analyst.Client    // 애널리스트(등급/목표주가/추정)
 	Company    *company.Client    // 회사 정보(프로필 등)
 	Statements *statements.Client // 재무제표(소득, 대차대조표 등)
 	Ratios     *ratios.Client     // 재무비율
@@ -42,6 +44,7 @@ func NewClient(apiKey string, opts ...Option) (*Client, error) {
 		HTTPClient: cfg.httpClient,
 	})
 	c := &Client{http: hc}
+	c.Analyst = analyst.New(hc)
 	c.Company = company.New(hc)
 	c.Statements = statements.New(hc)
 	c.Ratios = ratios.New(hc)
