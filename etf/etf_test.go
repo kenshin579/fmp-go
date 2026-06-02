@@ -231,6 +231,9 @@ func TestAssetExposure_Parse(t *testing.T) {
 	if r.WeightPercentage == 0 {
 		t.Errorf("WeightPercentage should not be zero")
 	}
+	if r.MarketValue == 0 { // float64 소수 디코딩 검증
+		t.Errorf("MarketValue should not be zero: %v", r.MarketValue)
+	}
 }
 
 func TestAssetExposure_Delegation(t *testing.T) {
