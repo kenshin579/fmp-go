@@ -18,6 +18,15 @@ func TestSearchExchangeVariants_ParsesFixture(t *testing.T) {
 	if rows[0].Symbol != "AAPL" || rows[0].MktCap <= 0 || rows[0].CompanyName == "" {
 		t.Errorf("not parsed: %+v", rows[0])
 	}
+	if rows[0].VolAvg <= 0 {
+		t.Errorf("VolAvg not parsed: %+v", rows[0])
+	}
+	if !rows[0].IsActivelyTrading {
+		t.Errorf("IsActivelyTrading should be true: %+v", rows[0])
+	}
+	if rows[0].DCF <= 0 {
+		t.Errorf("DCF not parsed: %+v", rows[0])
+	}
 	if _, err := c.SearchExchangeVariants(context.Background(), "  "); err == nil {
 		t.Fatal("want empty symbol guard")
 	}
