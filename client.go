@@ -9,6 +9,7 @@ import (
 	"github.com/kenshin579/fmp-go/calendar"
 	"github.com/kenshin579/fmp-go/chart"
 	"github.com/kenshin579/fmp-go/company"
+	"github.com/kenshin579/fmp-go/directory"
 	"github.com/kenshin579/fmp-go/internal/httpclient"
 	"github.com/kenshin579/fmp-go/marketperf"
 	"github.com/kenshin579/fmp-go/metrics"
@@ -37,6 +38,7 @@ type Client struct {
 	Chart      *chart.Client      // 과거 시세(EOD/intraday)
 
 	MarketPerformance *marketperf.Client // 시장 성과(등락/섹터/산업/PE)
+	Directory         *directory.Client  // 목록(심볼/거래소/섹터/산업/국가)
 }
 
 // NewClient 는 API 키로 Client 를 만든다.
@@ -67,5 +69,6 @@ func NewClient(apiKey string, opts ...Option) (*Client, error) {
 	c.Reports = reports.New(hc)
 	c.Chart = chart.New(hc)
 	c.MarketPerformance = marketperf.New(hc)
+	c.Directory = directory.New(hc)
 	return c, nil
 }
