@@ -253,3 +253,13 @@ func TestNewClient_HasFundraisers(t *testing.T) {
 		t.Fatal("Fundraisers sub-client is nil")
 	}
 }
+
+func TestNewClient_HasForm13F(t *testing.T) {
+	c, err := fmp.NewClient("k")
+	if err != nil {
+		t.Fatalf("NewClient: %v", err)
+	}
+	if c.Form13F == nil {
+		t.Fatal("Form13F sub-client is nil")
+	}
+}

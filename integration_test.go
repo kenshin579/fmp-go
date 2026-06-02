@@ -207,6 +207,30 @@ func TestIntegration_Calendar(t *testing.T) {
 	}
 }
 
+func TestIntegration_Form13F(t *testing.T) {
+	if os.Getenv("FMP_API_KEY") == "" {
+		t.Skip("FMP_API_KEY 미설정 — skip")
+	}
+	c, err := fmp.NewClientFromEnv()
+	if err != nil {
+		t.Fatal(err)
+	}
+	ctx := context.Background()
+
+	if _, err := c.Form13F.LatestFilings(ctx, 0, 5); err != nil {
+		t.Errorf("LatestFilings: %v", err)
+	}
+	if _, err := c.Form13F.FilingDates(ctx, "0001067983"); err != nil {
+		t.Errorf("FilingDates: %v", err)
+	}
+	if _, err := c.Form13F.PositionsSummary(ctx, "AAPL", "2023", "3"); err != nil {
+		t.Errorf("PositionsSummary: %v", err)
+	}
+	if _, err := c.Form13F.IndustrySummary(ctx, "2023", "3"); err != nil {
+		t.Errorf("IndustrySummary: %v", err)
+	}
+}
+
 func TestIntegration_Fundraisers(t *testing.T) {
 	if os.Getenv("FMP_API_KEY") == "" {
 		t.Skip("FMP_API_KEY 미설정 — skip")

@@ -14,6 +14,7 @@ import (
 	"github.com/kenshin579/fmp-go/directory"
 	"github.com/kenshin579/fmp-go/economics"
 	"github.com/kenshin579/fmp-go/esg"
+	"github.com/kenshin579/fmp-go/form13f"
 	"github.com/kenshin579/fmp-go/fundraisers"
 	"github.com/kenshin579/fmp-go/insidertrades"
 	"github.com/kenshin579/fmp-go/internal/httpclient"
@@ -59,6 +60,7 @@ type Client struct {
 	EarningsTranscripts *transcripts.Client   // 실적 발표 트랜스크립트
 	COT                 *cot.Client           // 상품선물 COT 리포트
 	Fundraisers         *fundraisers.Client   // 크라우드펀딩/지분공모
+	Form13F             *form13f.Client       // 기관 13F 보유/분석
 }
 
 // NewClient 는 API 키로 Client 를 만든다.
@@ -100,5 +102,6 @@ func NewClient(apiKey string, opts ...Option) (*Client, error) {
 	c.EarningsTranscripts = transcripts.New(hc)
 	c.COT = cot.New(hc)
 	c.Fundraisers = fundraisers.New(hc)
+	c.Form13F = form13f.New(hc)
 	return c, nil
 }
