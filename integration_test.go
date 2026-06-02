@@ -204,6 +204,27 @@ func TestIntegration_Calendar(t *testing.T) {
 	}
 }
 
+func TestIntegration_Chart(t *testing.T) {
+	if os.Getenv("FMP_API_KEY") == "" {
+		t.Skip("FMP_API_KEY 미설정 — skip")
+	}
+	c, err := fmp.NewClientFromEnv()
+	if err != nil {
+		t.Fatal(err)
+	}
+	ctx := context.Background()
+
+	if rows, err := c.Chart.HistoricalPriceEODLight(ctx, "AAPL", "", ""); err != nil || len(rows) == 0 {
+		t.Errorf("HistoricalPriceEODLight: err=%v len=%d", err, len(rows))
+	}
+	if rows, err := c.Chart.HistoricalPriceEODFull(ctx, "AAPL", "", ""); err != nil || len(rows) == 0 || rows[0].Close <= 0 {
+		t.Errorf("HistoricalPriceEODFull: err=%v len=%d", err, len(rows))
+	}
+	if rows, err := c.Chart.Intraday1Hour(ctx, "AAPL", "", "", false); err != nil || len(rows) == 0 {
+		t.Errorf("Intraday1Hour: err=%v len=%d", err, len(rows))
+	}
+}
+
 func TestIntegration_Reports(t *testing.T) {
 	if os.Getenv("FMP_API_KEY") == "" {
 		t.Skip("FMP_API_KEY 미설정 — skip")

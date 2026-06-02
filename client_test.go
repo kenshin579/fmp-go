@@ -123,3 +123,13 @@ func TestNewClient_HasReports(t *testing.T) {
 		t.Fatal("Reports sub-client is nil")
 	}
 }
+
+func TestNewClient_HasChart(t *testing.T) {
+	c, err := fmp.NewClient("k")
+	if err != nil {
+		t.Fatalf("NewClient: %v", err)
+	}
+	if c.Chart == nil {
+		t.Fatal("Chart sub-client is nil")
+	}
+}
