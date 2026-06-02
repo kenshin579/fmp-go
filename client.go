@@ -26,6 +26,7 @@ import (
 	"github.com/kenshin579/fmp-go/senate"
 	"github.com/kenshin579/fmp-go/statements"
 	"github.com/kenshin579/fmp-go/technicals"
+	"github.com/kenshin579/fmp-go/transcripts"
 )
 
 // Client 는 fmp-go 라이브러리의 단일 진입점.
@@ -53,6 +54,7 @@ type Client struct {
 	DCF                 *dcf.Client           // DCF 밸류에이션
 	Senate              *senate.Client        // 의회(상원/하원) 거래 공시
 	ESG                 *esg.Client           // ESG 평가/공시/벤치마크
+	EarningsTranscripts *transcripts.Client   // 실적 발표 트랜스크립트
 }
 
 // NewClient 는 API 키로 Client 를 만든다.
@@ -91,5 +93,6 @@ func NewClient(apiKey string, opts ...Option) (*Client, error) {
 	c.DCF = dcf.New(hc)
 	c.Senate = senate.New(hc)
 	c.ESG = esg.New(hc)
+	c.EarningsTranscripts = transcripts.New(hc)
 	return c, nil
 }

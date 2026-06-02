@@ -207,6 +207,27 @@ func TestIntegration_Calendar(t *testing.T) {
 	}
 }
 
+func TestIntegration_EarningsTranscripts(t *testing.T) {
+	if os.Getenv("FMP_API_KEY") == "" {
+		t.Skip("FMP_API_KEY 미설정 — skip")
+	}
+	c, err := fmp.NewClientFromEnv()
+	if err != nil {
+		t.Fatal(err)
+	}
+	ctx := context.Background()
+
+	if rows, err := c.EarningsTranscripts.Latest(ctx, 0, 10); err != nil || len(rows) == 0 {
+		t.Errorf("Latest: err=%v len=%d", err, len(rows))
+	}
+	if rows, err := c.EarningsTranscripts.Dates(ctx, "AAPL"); err != nil || len(rows) == 0 {
+		t.Errorf("Dates: err=%v len=%d", err, len(rows))
+	}
+	if _, err := c.EarningsTranscripts.Transcript(ctx, "AAPL", "2023", "1", 0); err != nil {
+		t.Errorf("Transcript: %v", err)
+	}
+}
+
 func TestIntegration_ESG(t *testing.T) {
 	if os.Getenv("FMP_API_KEY") == "" {
 		t.Skip("FMP_API_KEY 미설정 — skip")
