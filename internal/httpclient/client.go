@@ -66,12 +66,12 @@ type errorEnvelope struct {
 	ErrorMessage string `json:"Error Message"`
 }
 
-// GetJSON 은 apikey 를 주입해 GET 후 응답을 out 으로 디코딩한다.
+// get 은 apikey 를 주입해 GET 후 응답 바디를 반환한다.
 // 비-200 또는 "Error Message" 바디는 *APIError 로 매핑한다.
-func (c *Client) GetJSON(ctx context.Context, path string, params map[string]string, out any) error {
+func (c *Client) get(ctx context.Context, path string, params map[string]string) ([]byte, error) {
 	u, err := url.Parse(c.baseURL + path)
 	if err != nil {
-		return err
+		return nil, err
 	}
 	q := u.Query()
 	q.Set("apikey", c.apiKey)
@@ -82,16 +82,16 @@ func (c *Client) GetJSON(ctx context.Context, path string, params map[string]str
 
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, u.String(), nil)
 	if err != nil {
-		return err
+		return nil, err
 	}
 	resp, err := c.http.Do(req)
 	if err != nil {
-		return fmt.Errorf("fmp: GET %s: %w", path, err)
+		return nil, fmt.Errorf("fmp: GET %s: %w", path, err)
 	}
 	defer resp.Body.Close()
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
-		return fmt.Errorf("fmp: read %s: %w", path, err)
+		return nil, fmt.Errorf("fmp: read %s: %w", path, err)
 	}
 
 	if resp.StatusCode != http.StatusOK {
@@ -100,17 +100,32 @@ func (c *Client) GetJSON(ctx context.Context, path string, params map[string]str
 		if json.Unmarshal(body, &env) == nil && env.ErrorMessage != "" {
 			msg = env.ErrorMessage
 		}
-		return &APIError{StatusCode: resp.StatusCode, Message: msg}
+		return nil, &APIError{StatusCode: resp.StatusCode, Message: msg}
 	}
 
 	// 200 이지만 에러 envelope 일 수 있음(FMP 관용).
 	var env errorEnvelope
 	if json.Unmarshal(body, &env) == nil && env.ErrorMessage != "" {
-		return &APIError{StatusCode: resp.StatusCode, Message: env.ErrorMessage}
+		return nil, &APIError{StatusCode: resp.StatusCode, Message: env.ErrorMessage}
 	}
 
+	return body, nil
+}
+
+// GetJSON 은 apikey 를 주입해 GET 후 응답을 out 으로 디코딩한다.
+// 비-200 또는 "Error Message" 바디는 *APIError 로 매핑한다.
+func (c *Client) GetJSON(ctx context.Context, path string, params map[string]string, out any) error {
+	body, err := c.get(ctx, path, params)
+	if err != nil {
+		return err
+	}
 	if err := json.Unmarshal(body, out); err != nil {
 		return fmt.Errorf("fmp: decode %s: %w", path, err)
 	}
 	return nil
+}
+
+// GetRaw 는 apikey 주입 GET 후 응답 바디를 원시 바이트로 반환한다(CSV 등 비-JSON 용).
+func (c *Client) GetRaw(ctx context.Context, path string, params map[string]string) ([]byte, error) {
+	return c.get(ctx, path, params)
 }

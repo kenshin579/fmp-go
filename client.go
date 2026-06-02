@@ -7,6 +7,7 @@ import (
 
 	"github.com/kenshin579/fmp-go/analyst"
 	"github.com/kenshin579/fmp-go/assets"
+	"github.com/kenshin579/fmp-go/bulk"
 	"github.com/kenshin579/fmp-go/calendar"
 	"github.com/kenshin579/fmp-go/chart"
 	"github.com/kenshin579/fmp-go/company"
@@ -67,6 +68,7 @@ type Client struct {
 	ETF                 *etf.Client           // ETF/뮤추얼펀드 보유·정보
 	SECFilings          *secfilings.Client    // SEC 공시 검색/분류/프로필
 	Assets              *assets.Client        // 암호화폐/외환/원자재 목록
+	Bulk                *bulk.Client          // 대량 CSV export
 }
 
 // NewClient 는 API 키로 Client 를 만든다.
@@ -112,5 +114,6 @@ func NewClient(apiKey string, opts ...Option) (*Client, error) {
 	c.ETF = etf.New(hc)
 	c.SECFilings = secfilings.New(hc)
 	c.Assets = assets.New(hc)
+	c.Bulk = bulk.New(hc)
 	return c, nil
 }

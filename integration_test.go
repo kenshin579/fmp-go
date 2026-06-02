@@ -207,6 +207,28 @@ func TestIntegration_Calendar(t *testing.T) {
 	}
 }
 
+func TestIntegration_Bulk(t *testing.T) {
+	if os.Getenv("FMP_API_KEY") == "" {
+		t.Skip("FMP_API_KEY 미설정 — skip")
+	}
+	c, err := fmp.NewClientFromEnv()
+	if err != nil {
+		t.Fatal(err)
+	}
+	ctx := context.Background()
+
+	if b, err := c.Bulk.Scores(ctx); err != nil || len(b) == 0 {
+		t.Errorf("Scores: err=%v len=%d", err, len(b))
+	}
+	if b, err := c.Bulk.Peers(ctx); err != nil || len(b) == 0 {
+		t.Errorf("Peers: err=%v len=%d", err, len(b))
+	}
+	date := time.Now().AddDate(0, 0, -1).Format("2006-01-02")
+	if _, err := c.Bulk.EOD(ctx, date); err != nil {
+		t.Errorf("EOD: %v", err)
+	}
+}
+
 func TestIntegration_Assets(t *testing.T) {
 	if os.Getenv("FMP_API_KEY") == "" {
 		t.Skip("FMP_API_KEY 미설정 — skip")
