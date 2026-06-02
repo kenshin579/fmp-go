@@ -223,3 +223,13 @@ func TestNewClient_HasESG(t *testing.T) {
 		t.Fatal("ESG sub-client is nil")
 	}
 }
+
+func TestNewClient_HasEarningsTranscripts(t *testing.T) {
+	c, err := fmp.NewClient("k")
+	if err != nil {
+		t.Fatalf("NewClient: %v", err)
+	}
+	if c.EarningsTranscripts == nil {
+		t.Fatal("EarningsTranscripts sub-client is nil")
+	}
+}
