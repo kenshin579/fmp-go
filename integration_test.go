@@ -204,6 +204,38 @@ func TestIntegration_Calendar(t *testing.T) {
 	}
 }
 
+func TestIntegration_Reports(t *testing.T) {
+	if os.Getenv("FMP_API_KEY") == "" {
+		t.Skip("FMP_API_KEY 미설정 — skip")
+	}
+	c, err := fmp.NewClientFromEnv()
+	if err != nil {
+		t.Fatal(err)
+	}
+	ctx := context.Background()
+
+	if rows, err := c.Reports.IncomeStatementAsReported(ctx, "AAPL", "annual", 1); err != nil || len(rows) == 0 || len(rows[0].Data) == 0 {
+		t.Errorf("IncomeStatementAsReported: err=%v len=%d", err, len(rows))
+	} else if _, ok := rows[0].Data["grossprofit"]; !ok {
+		t.Errorf("IncomeStatementAsReported: grossprofit 키 없음: %v", rows[0].Data)
+	}
+	if rows, err := c.Reports.LatestFinancialStatements(ctx, 0, 5); err != nil || len(rows) == 0 {
+		t.Errorf("LatestFinancialStatements: err=%v len=%d", err, len(rows))
+	}
+	if rows, err := c.Reports.FinancialReportDates(ctx, "AAPL"); err != nil || len(rows) == 0 || rows[0].LinkJson == "" {
+		t.Errorf("FinancialReportDates: err=%v len=%d", err, len(rows))
+	}
+	if rows, err := c.Reports.FinancialReportJSON(ctx, "AAPL", 2022, "FY"); err != nil || len(rows) == 0 {
+		t.Errorf("FinancialReportJSON: err=%v len=%d", err, len(rows))
+	} else {
+		keys := make([]string, 0, len(rows[0]))
+		for k := range rows[0] {
+			keys = append(keys, k)
+		}
+		t.Logf("FinancialReportJSON 섹션 키 일부: %v", keys)
+	}
+}
+
 func TestIntegration_Metrics(t *testing.T) {
 	if os.Getenv("FMP_API_KEY") == "" {
 		t.Skip("FMP_API_KEY 미설정 — skip")
