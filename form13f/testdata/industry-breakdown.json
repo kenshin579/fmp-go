@@ -1,0 +1,16 @@
+[
+	{
+		"date": "2023-09-30",
+		"cik": "0001067983",
+		"investorName": "BERKSHIRE HATHAWAY INC",
+		"industryTitle": "ELECTRONIC COMPUTERS",
+		"weight": 49.7704,
+		"lastWeight": 51.0035,
+		"changeInWeight": -1.2332,
+		"changeInWeightPercentage": -2.4178,
+		"performance": -20838154294,
+		"performancePercentage": -178.2938,
+		"lastPerformance": 26615340304,
+		"changeInPerformance": -47453494598
+	}
+]
