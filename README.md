@@ -1,5 +1,8 @@
 # fmp-go
 
+[![Go Reference](https://pkg.go.dev/badge/github.com/kenshin579/fmp-go.svg)](https://pkg.go.dev/github.com/kenshin579/fmp-go)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 A Go client library for the [Financial Modeling Prep (FMP)](https://financialmodelingprep.com/) API.
 
 ## Installation
@@ -19,6 +22,9 @@ ctx := context.Background()
 profile, _ := client.Company.Profile(ctx, "AAPL") // company profile
 fmt.Println(profile.CompanyName, profile.CEO, profile.Website)
 ```
+
+Every service method takes a `context.Context` as its first argument, so
+requests honor cancellation and deadlines (e.g. `context.WithTimeout`).
 
 See the [`examples/`](examples/) directory for runnable examples of each category.
 
@@ -42,7 +48,31 @@ client, _ := fmp.NewClient(apiKey,
 )
 ```
 
+## Error Handling
+
+All service methods return standard Go errors:
+
+- When a lookup yields no result (e.g. an empty array), the method returns
+  `fmp.ErrNotFound` — check it with `errors.Is`.
+- A non-200 HTTP response or an FMP `"Error Message"` body is returned as
+  `*fmp.APIError`, exposing `StatusCode` and `Message` via `errors.As`.
+
+```go
+profile, err := client.Company.Profile(ctx, "AAPL")
+if errors.Is(err, fmp.ErrNotFound) {
+    // no data for this symbol
+}
+
+var apiErr *fmp.APIError
+if errors.As(err, &apiErr) {
+    log.Printf("FMP error: status=%d message=%s", apiErr.StatusCode, apiErr.Message)
+}
+```
+
 ## Coverage
+
+**222 endpoints across 28 categories** (~84% of the 263 documented FMP stable
+endpoints), expanding incrementally by category.
 
 | Category | Service | Endpoints |
 |----------|---------|-----------|
@@ -75,7 +105,6 @@ client, _ := fmp.NewClient(apiKey,
 | News | `client.News` | StockNewsLatest, CryptoNewsLatest, ForexNewsLatest, GeneralNewsLatest, PressReleasesLatest, SearchStockNews, SearchCryptoNews, SearchForexNews, SearchPressReleases, FMPArticles — 10 endpoints |
 | Calendar | `client.Calendar` | DividendsCalendar, CompanyDividends, EarningsCalendar, CompanyEarnings, IPOsCalendar, IPODisclosures, IPOProspectuses, SplitsCalendar, CompanySplits — 9 endpoints |
 
-> The library aims for full FMP API coverage, expanding incrementally by category.
 > The complete API documentation catalog lives in [`docs/api/`](docs/api/).
 
 ## Development
