@@ -2,6 +2,7 @@ package company
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"strings"
 
@@ -46,6 +47,52 @@ type Profile struct {
 	IsActivelyTrading bool    `json:"isActivelyTrading"` // 거래 활성 여부
 	IsAdr             bool    `json:"isAdr"`             // ADR 여부
 	IsFund            bool    `json:"isFund"`            // 펀드 여부
+}
+
+// profileFields — Profile 과 같은 필드를 갖되 UnmarshalJSON 을 물려받지 않는 별칭.
+// 아래 UnmarshalJSON 이 자기 자신을 무한히 부르지 않게 하는 표준 수법이다.
+type profileFields Profile
+
+// UnmarshalJSON — volume·averageVolume 이 소수로 와도 프로필을 살려서 받는다.
+//
+// FMP 는 이 둘을 정수로 문서화했지만 실제로는 소수가 섞여 온다(운영 관측: 0.656,
+// 104964205.74442, 45424.207). 기본 디코더는 그때 **구조체 전체**를 포기하므로,
+// 거래량 한 필드 때문에 회사명·섹터·CEO 까지 전부 날아간다. 그래서 두 필드만
+// json.Number 로 받아 int64 로 버림한다.
+//
+// 필드 타입을 float64 로 바꾸지 않는 이유는 거래량이 주식 수이기 때문이다 —
+// 소비자 코드에 소수 거래량이 퍼지는 것보다, 들어올 때 한 번 정수로 맞추는 편이
+// 낫다. 같은 위험은 quote·chart·search 의 Volume 필드에도 있지만, 실제로 깨진
+// 것을 본 곳만 고친다.
+func (p *Profile) UnmarshalJSON(data []byte) error {
+	var raw struct {
+		profileFields
+		Volume        json.Number `json:"volume"`
+		AverageVolume json.Number `json:"averageVolume"`
+	}
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return err
+	}
+	*p = Profile(raw.profileFields)
+	p.Volume = truncInt64(raw.Volume)
+	p.AverageVolume = truncInt64(raw.AverageVolume)
+	return nil
+}
+
+// truncInt64 — JSON 숫자를 int64 로 버림한다. 빈 값(필드 없음)과 int64 로 담을 수
+// 없는 값은 0 이다. 후자는 거래량으로 성립하지 않는 수라 버리는 편이 낫다.
+func truncInt64(n json.Number) int64 {
+	if n == "" {
+		return 0
+	}
+	if i, err := n.Int64(); err == nil {
+		return i
+	}
+	f, err := n.Float64()
+	if err != nil {
+		return 0
+	}
+	return int64(f)
 }
 
 // Profile 은 종목의 회사 프로필을 조회한다. 결과 없으면 httpclient.ErrNotFound.
