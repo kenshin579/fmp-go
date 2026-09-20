@@ -68,3 +68,46 @@ func TestProfile_EmptyArrayIsNotFound(t *testing.T) {
 		t.Fatalf("want ErrNotFound, got %v", err)
 	}
 }
+
+func TestProfile_FractionalVolume(t *testing.T) {
+	// FMP 는 /stable/profile 의 volume·averageVolume 을 정수로 내려준다고 문서에
+	// 적어 두었지만 실제로는 소수가 섞여 온다 — 운영에서 0.656 · 104964205.74442 ·
+	// 45424.207 을 관측했다. int64 로 바로 받으면 필드 하나가 아니라 **프로필 전체**
+	// 디코드가 실패해 그 종목의 회사 개요가 통째로 비어 버린다.
+	body := `[{"symbol":"ZZZ","companyName":"Frac Inc","volume":104964205.74442,"averageVolume":45424.207}]`
+	c, cleanup := newTestClient(t, http.StatusOK, body)
+	defer cleanup()
+
+	p, err := c.Profile(context.Background(), "ZZZ")
+	if err != nil {
+		t.Fatalf("Profile: %v", err)
+	}
+	if p.Symbol != "ZZZ" {
+		t.Errorf("Symbol = %q, want ZZZ", p.Symbol)
+	}
+	if p.CompanyName != "Frac Inc" {
+		t.Errorf("CompanyName = %q, want Frac Inc", p.CompanyName)
+	}
+	if p.Volume != 104964205 {
+		t.Errorf("Volume = %d, want 104964205", p.Volume)
+	}
+	if p.AverageVolume != 45424 {
+		t.Errorf("AverageVolume = %d, want 45424", p.AverageVolume)
+	}
+}
+
+func TestProfile_VolumeBelowOneTruncatesToZero(t *testing.T) {
+	// 0.656 같은 값은 버림이라 0 이 된다. 0 이 "거래량 없음" 과 구분되지 않는 것은
+	// 받아들인다 — 소수점 이하 거래량이라는 값 자체가 의미를 갖지 않고, 대안(반올림)
+	// 이 1 을 만들어 내는 쪽이 더 거짓말이다.
+	c, cleanup := newTestClient(t, http.StatusOK, `[{"symbol":"ZZZ","volume":0.656}]`)
+	defer cleanup()
+
+	p, err := c.Profile(context.Background(), "ZZZ")
+	if err != nil {
+		t.Fatalf("Profile: %v", err)
+	}
+	if p.Volume != 0 {
+		t.Errorf("Volume = %d, want 0", p.Volume)
+	}
+}
